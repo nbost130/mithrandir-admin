@@ -1,7 +1,7 @@
 import { useState } from "react"
 import { useQuery, useQueryClient } from "@tanstack/react-query"
 import {
-  ColumnDef,
+  type ColumnDef,
   flexRender,
   getCoreRowModel,
   getFilteredRowModel,
@@ -21,7 +21,7 @@ import {
 } from "@/components/ui/table"
 import { Badge } from "@/components/ui/badge"
 import { transcriptionApi } from "../api/transcription-api"
-import { TranscriptionJob } from "../data/types"
+import type { TranscriptionJob } from "../data/types"
 import { 
   CheckCircle2, 
   XCircle, 
@@ -76,8 +76,8 @@ export function TranscriptionTable() {
     try {
       await transcriptionApi.retryJob(jobId)
       queryClient.invalidateQueries({ queryKey: ["transcription-jobs"] })
-    } catch (error) {
-      console.error("Failed to retry job:", error)
+    } catch {
+      // Error handling could be improved with toast notifications
     }
   }
 
@@ -85,8 +85,8 @@ export function TranscriptionTable() {
     try {
       await transcriptionApi.deleteJob(jobId)
       queryClient.invalidateQueries({ queryKey: ["transcription-jobs"] })
-    } catch (error) {
-      console.error("Failed to delete job:", error)
+    } catch {
+      // Error handling could be improved with toast notifications
     }
   }
 

@@ -1,5 +1,5 @@
 import axios from "axios"
-import { JobsResponse, TranscriptionJob } from "../data/types"
+import type { JobsResponse, TranscriptionJob } from "../data/types"
 
 const API_BASE = import.meta.env.VITE_TRANSCRIPTION_API || "http://100.77.230.53:8080/transcription"
 

@@ -11,7 +11,7 @@ export interface ServiceDetails {
   uptime?: number
   version?: string
   error?: string
-  details?: any
+  details?: Record<string, unknown>
   lastChecked: string
 }
 
