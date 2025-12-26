@@ -1,0 +1,66 @@
+name: 🚀 Deploy to Production
+
+on:
+  push:
+    branches: [ main ]
+    paths-ignore:
+      - '**.md'
+      - 'docs/**'
+      - 'LICENSE'
+      - '.gitignore'
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    name: Deploy to Mithrandir
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    
+    steps:
+    - name: 📥 Checkout code
+      uses: actions/checkout@v4
+      
+    - name: 🔗 Connect to Tailscale
+      uses: tailscale/github-action@v2
+      with:
+        oauth-client-id: ${{ secrets.TAILSCALE_OAUTH_CLIENT_ID }}
+        oauth-secret: ${{ secrets.TAILSCALE_OAUTH_SECRET }}
+        tags: tag:ci
+      
+    - name: 🔐 Setup SSH
+      uses: webfactory/ssh-agent@v0.9.0
+      with:
+        ssh-private-key: ${{ secrets.MITHRANDIR_SSH_KEY }}
+        
+    - name: 📝 Add SSH known hosts
+      run: |
+        mkdir -p ~/.ssh
+        ssh-keyscan -H 100.77.230.53 >> ~/.ssh/known_hosts
+        
+    - name: 🚀 Deploy to production
+      run: |
+        ssh nbost@100.77.230.53 << 'ENDSSH'
+          set -e
+          
+          echo "📂 Navigating to project directory..."
+          cd /home/nbost/Projects/mithrandir-admin
+          
+          echo "📥 Pulling latest changes..."
+          git pull origin main
+          
+          echo "📦 Installing dependencies..."
+          npm install
+          
+          echo "🔨 Building project..."
+          npm run build
+          
+          echo "🔄 Restarting service..."
+          systemctl --user restart mithrandir-admin
+          
+          echo "✅ Verifying deployment..."
+          sleep 5
+          curl -f http://localhost:3000 || exit 1
+          
+          echo "🎉 Deployment successful!"
+        ENDSSH
+
