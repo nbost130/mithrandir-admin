@@ -1,22 +1,6 @@
-import { createFileRoute } from "@tanstack/react-router"
+import { formatDistanceToNow } from 'date-fns'
 import { useQuery } from '@tanstack/react-query'
-import { servicesApi } from '@/features/services/api/services-api'
-import { Header } from '@/components/layout/header'
-import { Main } from '@/components/layout/main'
-import { TopNav } from '@/components/layout/top-nav'
-import { ProfileDropdown } from '@/components/profile-dropdown'
-import { Search } from '@/components/search'
-import { ThemeSwitch } from '@/components/theme-switch'
-import { ConfigDrawer } from '@/components/config-drawer'
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card'
-import { Badge } from '@/components/ui/badge'
-import { Button } from '@/components/ui/button'
+import { createFileRoute } from '@tanstack/react-router'
 import {
   CheckCircle2,
   XCircle,
@@ -24,9 +8,25 @@ import {
   Server,
   ExternalLink,
   RefreshCw,
-  AlertCircle
+  AlertCircle,
 } from 'lucide-react'
-import { formatDistanceToNow } from 'date-fns'
+import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card'
+import { ConfigDrawer } from '@/components/config-drawer'
+import { Header } from '@/components/layout/header'
+import { Main } from '@/components/layout/main'
+import { TopNav } from '@/components/layout/top-nav'
+import { ProfileDropdown } from '@/components/profile-dropdown'
+import { Search } from '@/components/search'
+import { ThemeSwitch } from '@/components/theme-switch'
+import { servicesApi } from '@/features/services/api/services-api'
 
 function ServicesPage() {
   const { data, isLoading, refetch, isRefetching } = useQuery({
@@ -61,7 +61,9 @@ function ServicesPage() {
       <Main>
         <div className='mb-6 flex items-center justify-between'>
           <div>
-            <h1 className='text-2xl font-bold tracking-tight'>Services Health</h1>
+            <h1 className='text-2xl font-bold tracking-tight'>
+              Services Health
+            </h1>
             <p className='text-muted-foreground'>
               Monitor status and health of all Mithrandir services
             </p>
@@ -72,7 +74,9 @@ function ServicesPage() {
             variant='outline'
             size='sm'
           >
-            <RefreshCw className={`mr-2 h-4 w-4 ${isRefetching ? 'animate-spin' : ''}`} />
+            <RefreshCw
+              className={`mr-2 h-4 w-4 ${isRefetching ? 'animate-spin' : ''}`}
+            />
             Refresh
           </Button>
         </div>
@@ -81,12 +85,14 @@ function ServicesPage() {
           <div className='mb-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4'>
             <Card>
               <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
-                <CardTitle className='text-sm font-medium'>Total Services</CardTitle>
-                <Server className='h-4 w-4 text-muted-foreground' />
+                <CardTitle className='text-sm font-medium'>
+                  Total Services
+                </CardTitle>
+                <Server className='text-muted-foreground h-4 w-4' />
               </CardHeader>
               <CardContent>
                 <div className='text-2xl font-bold'>{data.summary.total}</div>
-                <p className='text-xs text-muted-foreground'>
+                <p className='text-muted-foreground text-xs'>
                   Monitored services
                 </p>
               </CardContent>
@@ -98,8 +104,10 @@ function ServicesPage() {
                 <CheckCircle2 className='h-4 w-4 text-green-500' />
               </CardHeader>
               <CardContent>
-                <div className='text-2xl font-bold text-green-600'>{data.summary.healthy}</div>
-                <p className='text-xs text-muted-foreground'>
+                <div className='text-2xl font-bold text-green-600'>
+                  {data.summary.healthy}
+                </div>
+                <p className='text-muted-foreground text-xs'>
                   Running normally
                 </p>
               </CardContent>
@@ -111,23 +119,25 @@ function ServicesPage() {
                 <XCircle className='h-4 w-4 text-red-500' />
               </CardHeader>
               <CardContent>
-                <div className='text-2xl font-bold text-red-600'>{data.summary.unhealthy}</div>
-                <p className='text-xs text-muted-foreground'>
-                  Need attention
-                </p>
+                <div className='text-2xl font-bold text-red-600'>
+                  {data.summary.unhealthy}
+                </div>
+                <p className='text-muted-foreground text-xs'>Need attention</p>
               </CardContent>
             </Card>
 
             <Card>
               <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
-                <CardTitle className='text-sm font-medium'>System Health</CardTitle>
-                <Activity className='h-4 w-4 text-muted-foreground' />
+                <CardTitle className='text-sm font-medium'>
+                  System Health
+                </CardTitle>
+                <Activity className='text-muted-foreground h-4 w-4' />
               </CardHeader>
               <CardContent>
-                <div className='text-2xl font-bold'>{data.summary.healthPercentage}%</div>
-                <p className='text-xs text-muted-foreground'>
-                  Overall status
-                </p>
+                <div className='text-2xl font-bold'>
+                  {data.summary.healthPercentage}%
+                </div>
+                <p className='text-muted-foreground text-xs'>Overall status</p>
               </CardContent>
             </Card>
           </div>
@@ -138,13 +148,13 @@ function ServicesPage() {
             {[1, 2, 3, 4, 5, 6].map((i) => (
               <Card key={i} className='animate-pulse'>
                 <CardHeader>
-                  <div className='h-5 w-32 bg-muted rounded' />
-                  <div className='h-4 w-24 bg-muted rounded' />
+                  <div className='bg-muted h-5 w-32 rounded' />
+                  <div className='bg-muted h-4 w-24 rounded' />
                 </CardHeader>
                 <CardContent>
                   <div className='space-y-2'>
-                    <div className='h-4 w-full bg-muted rounded' />
-                    <div className='h-4 w-3/4 bg-muted rounded' />
+                    <div className='bg-muted h-4 w-full rounded' />
+                    <div className='bg-muted h-4 w-3/4 rounded' />
                   </div>
                 </CardContent>
               </Card>
@@ -154,8 +164,8 @@ function ServicesPage() {
           <Card>
             <CardContent className='flex items-center justify-center py-10'>
               <div className='text-center'>
-                <AlertCircle className='mx-auto h-12 w-12 text-muted-foreground' />
-                <p className='mt-2 text-muted-foreground'>
+                <AlertCircle className='text-muted-foreground mx-auto h-12 w-12' />
+                <p className='text-muted-foreground mt-2'>
                   Failed to load services data
                 </p>
               </div>
@@ -164,7 +174,12 @@ function ServicesPage() {
         ) : (
           <div className='grid gap-4 md:grid-cols-2 lg:grid-cols-3'>
             {data.services.map((service) => (
-              <Card key={service.identifier} className={service.status === 'unhealthy' ? 'border-red-200' : ''}>
+              <Card
+                key={service.identifier}
+                className={
+                  service.status === 'unhealthy' ? 'border-red-200' : ''
+                }
+              >
                 <CardHeader>
                   <div className='flex items-start justify-between'>
                     <div className='flex-1'>
@@ -176,11 +191,13 @@ function ServicesPage() {
                           <XCircle className='h-4 w-4 text-red-500' />
                         )}
                       </CardTitle>
-                      <CardDescription>
-                        Port {service.port}
-                      </CardDescription>
+                      <CardDescription>Port {service.port}</CardDescription>
                     </div>
-                    <Badge variant={service.status === 'healthy' ? 'default' : 'destructive'}>
+                    <Badge
+                      variant={
+                        service.status === 'healthy' ? 'default' : 'destructive'
+                      }
+                    >
                       {service.status}
                     </Badge>
                   </div>
@@ -190,7 +207,9 @@ function ServicesPage() {
                     {service.uptime !== undefined && (
                       <div>
                         <span className='text-muted-foreground'>Uptime:</span>
-                        <p className='font-medium'>{formatUptime(service.uptime)}</p>
+                        <p className='font-medium'>
+                          {formatUptime(service.uptime)}
+                        </p>
                       </div>
                     )}
                     {service.version && (
@@ -203,18 +222,24 @@ function ServicesPage() {
 
                   {service.error && (
                     <div className='rounded-md bg-red-50 p-2 text-xs text-red-800 dark:bg-red-950 dark:text-red-200'>
-                      <span className='font-medium'>Error:</span> {service.error}
+                      <span className='font-medium'>Error:</span>{' '}
+                      {service.error}
                     </div>
                   )}
 
-                  {service.details && Object.keys(service.details).length > 0 && (
-                    <div className='text-xs'>
-                      <span className='text-muted-foreground'>Last checked:</span>
-                      <p className='font-medium'>
-                        {formatDistanceToNow(new Date(service.lastChecked), { addSuffix: true })}
-                      </p>
-                    </div>
-                  )}
+                  {service.details &&
+                    Object.keys(service.details).length > 0 && (
+                      <div className='text-xs'>
+                        <span className='text-muted-foreground'>
+                          Last checked:
+                        </span>
+                        <p className='font-medium'>
+                          {formatDistanceToNow(new Date(service.lastChecked), {
+                            addSuffix: true,
+                          })}
+                        </p>
+                      </div>
+                    )}
 
                   <div className='flex gap-2'>
                     <Button
@@ -258,6 +283,6 @@ const topNav = [
   },
 ]
 
-export const Route = createFileRoute("/_authenticated/services/")({
+export const Route = createFileRoute('/_authenticated/services/')({
   component: ServicesPage,
 })

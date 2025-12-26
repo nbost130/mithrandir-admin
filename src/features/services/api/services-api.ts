@@ -1,6 +1,7 @@
 import axios from 'axios'
 
-const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://100.77.230.53:8080'
+const API_BASE =
+  import.meta.env.VITE_API_BASE_URL || 'http://100.77.230.53:8080'
 
 export interface ServiceDetails {
   name: string
@@ -40,5 +41,5 @@ export const servicesApi = {
       `${API_BASE}/api/services/health`
     )
     return response.data.data
-  }
+  },
 }

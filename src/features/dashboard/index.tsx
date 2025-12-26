@@ -1,3 +1,5 @@
+import { useQuery } from '@tanstack/react-query'
+import { Activity, Server, Zap, CheckCircle2 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import {
   Card,
@@ -14,12 +16,10 @@ import { TopNav } from '@/components/layout/top-nav'
 import { ProfileDropdown } from '@/components/profile-dropdown'
 import { Search } from '@/components/search'
 import { ThemeSwitch } from '@/components/theme-switch'
+import { dashboardApi } from './api/dashboard-api'
 import { Analytics } from './components/analytics'
 import { Overview } from './components/overview'
 import { RecentSales } from './components/recent-sales'
-import { useQuery } from '@tanstack/react-query'
-import { dashboardApi } from './api/dashboard-api'
-import { Activity, Server, Zap, CheckCircle2 } from 'lucide-react'
 
 export function Dashboard() {
   const { data: stats, isLoading } = useQuery({
@@ -102,7 +102,9 @@ export function Dashboard() {
               </Card>
               <Card>
                 <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
-                  <CardTitle className='text-sm font-medium'>System Health</CardTitle>
+                  <CardTitle className='text-sm font-medium'>
+                    System Health
+                  </CardTitle>
                   <Zap className='text-muted-foreground h-4 w-4' />
                 </CardHeader>
                 <CardContent>
@@ -110,7 +112,9 @@ export function Dashboard() {
                     {isLoading ? '...' : `${stats?.systemHealth || 0}%`}
                   </div>
                   <p className='text-muted-foreground text-xs'>
-                    {isLoading ? '...' : `${stats?.servicesRunning || 0}/${stats?.totalServices || 0} services running`}
+                    {isLoading
+                      ? '...'
+                      : `${stats?.servicesRunning || 0}/${stats?.totalServices || 0} services running`}
                   </p>
                 </CardContent>
               </Card>

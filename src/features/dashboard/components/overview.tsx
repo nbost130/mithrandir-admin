@@ -1,5 +1,5 @@
-import { Bar, BarChart, ResponsiveContainer, XAxis, YAxis } from 'recharts'
 import { useQuery } from '@tanstack/react-query'
+import { Bar, BarChart, ResponsiveContainer, XAxis, YAxis } from 'recharts'
 import { dashboardApi } from '../api/dashboard-api'
 
 export function Overview() {
@@ -9,16 +9,19 @@ export function Overview() {
     refetchInterval: 30000, // Refresh every 30 seconds
   })
 
-  const chartData = trends.map(trend => ({
-    name: new Date(trend.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
+  const chartData = trends.map((trend) => ({
+    name: new Date(trend.date).toLocaleDateString('en-US', {
+      month: 'short',
+      day: 'numeric',
+    }),
     total: trend.total,
     completed: trend.completed,
-    failed: trend.failed
+    failed: trend.failed,
   }))
 
   if (isLoading || !chartData.length) {
     return (
-      <div className='flex h-[350px] items-center justify-center text-muted-foreground'>
+      <div className='text-muted-foreground flex h-[350px] items-center justify-center'>
         {isLoading ? 'Loading trends...' : 'No data available'}
       </div>
     )

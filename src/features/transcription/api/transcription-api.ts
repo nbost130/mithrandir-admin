@@ -1,15 +1,17 @@
-import axios from "axios"
-import type { JobsResponse, TranscriptionJob } from "../data/types"
+import axios from 'axios'
+import type { JobsResponse, TranscriptionJob } from '../data/types'
 
-const API_BASE = import.meta.env.VITE_TRANSCRIPTION_API || "http://100.77.230.53:8080/transcription"
+const API_BASE =
+  import.meta.env.VITE_TRANSCRIPTION_API ||
+  'http://100.77.230.53:8080/transcription'
 
 export const transcriptionApi = {
   // Fetch jobs by status
   async getJobs(status?: string, limit = 100): Promise<TranscriptionJob[]> {
     const params = new URLSearchParams()
-    if (status) params.append("status", status)
-    params.append("limit", limit.toString())
-    
+    if (status) params.append('status', status)
+    params.append('limit', limit.toString())
+
     const response = await axios.get<JobsResponse>(
       `${API_BASE}/jobs?${params.toString()}`
     )
@@ -19,10 +21,10 @@ export const transcriptionApi = {
   // Fetch all jobs
   async getAllJobs(): Promise<TranscriptionJob[]> {
     const [pending, processing, completed, failed] = await Promise.all([
-      this.getJobs("pending"),
-      this.getJobs("processing"),
-      this.getJobs("completed"),
-      this.getJobs("failed"),
+      this.getJobs('pending'),
+      this.getJobs('processing'),
+      this.getJobs('completed'),
+      this.getJobs('failed'),
     ])
     return [...pending, ...processing, ...completed, ...failed]
   },
@@ -39,17 +41,20 @@ export const transcriptionApi = {
 
   // Get job details
   async getJob(jobId: string): Promise<TranscriptionJob> {
-    const response = await axios.get<{ success: boolean; data: TranscriptionJob }>(
-      `${API_BASE}/jobs/${jobId}`
-    )
+    const response = await axios.get<{
+      success: boolean
+      data: TranscriptionJob
+    }>(`${API_BASE}/jobs/${jobId}`)
     return response.data.data
   },
 
   // Health check
   async healthCheck(): Promise<boolean> {
     try {
-      const response = await axios.get(`${API_BASE.replace("/api/v1", "")}/api/v1/health`)
-      return response.data.status === "healthy"
+      const response = await axios.get(
+        `${API_BASE.replace('/api/v1', '')}/api/v1/health`
+      )
+      return response.data.status === 'healthy'
     } catch {
       return false
     }

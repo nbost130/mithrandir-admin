@@ -22,6 +22,12 @@ export default defineConfig({
   preview: {
     host: '0.0.0.0',
     port: 3334,
-    allowedHosts: ['dashboard.shire', 'admin.shire', 'mithrandir-admin.shire', 'localhost', '100.77.230.53']
-  }
+    allowedHosts: [
+      'dashboard.shire',
+      'admin.shire',
+      'mithrandir-admin.shire',
+      'localhost',
+      '100.77.230.53',
+    ],
+  },
 })

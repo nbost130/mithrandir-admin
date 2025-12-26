@@ -2,7 +2,7 @@
 export interface TranscriptionJob {
   jobId: string
   fileName: string
-  status: "pending" | "processing" | "completed" | "failed"
+  status: 'pending' | 'processing' | 'completed' | 'failed'
   priority: number
   progress: number
   createdAt: string

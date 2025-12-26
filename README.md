@@ -5,6 +5,7 @@ Modern, professional admin dashboard for managing all Mithrandir services.
 ## 🎯 Features
 
 ### Phase 1: Transcription Dashboard (CURRENT)
+
 - ✅ Real-time transcription job monitoring
 - ✅ Job status tracking (pending, processing, completed, failed)
 - ✅ Progress indicators and statistics
@@ -14,6 +15,7 @@ Modern, professional admin dashboard for managing all Mithrandir services.
 - ✅ Modern UI with shadcn/ui components
 
 ### Coming Soon
+
 - 🔄 Delegation System Dashboard
 - 🎯 n8n Workflow Management
 - 📊 System Monitoring & Health
@@ -52,12 +54,14 @@ npm run preview
 ## 🌐 API Integration
 
 The dashboard integrates with:
+
 - **Transcription API**: http://100.77.230.53:9003/api/v1
 - **Unified API**: http://100.77.230.53:9003 (future)
 
 ## 📝 Configuration
 
 Environment variables in `.env`:
+
 ```
 VITE_APP_TITLE="Mithrandir Admin"
 VITE_TRANSCRIPTION_API=http://100.77.230.53:9003/api/v1

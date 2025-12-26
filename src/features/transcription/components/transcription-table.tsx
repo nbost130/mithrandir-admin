@@ -1,5 +1,6 @@
-import { useState } from "react"
-import { useQuery, useQueryClient } from "@tanstack/react-query"
+import { useState } from 'react'
+import { formatDistanceToNow } from 'date-fns'
+import { useQuery, useQueryClient } from '@tanstack/react-query'
 import {
   type ColumnDef,
   flexRender,
@@ -8,9 +9,19 @@ import {
   getPaginationRowModel,
   getSortedRowModel,
   useReactTable,
-} from "@tanstack/react-table"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
+} from '@tanstack/react-table'
+import {
+  CheckCircle2,
+  XCircle,
+  Loader2,
+  Clock,
+  RotateCw,
+  Trash2,
+  Download,
+} from 'lucide-react'
+import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
 import {
   Table,
   TableBody,
@@ -18,45 +29,34 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table"
-import { Badge } from "@/components/ui/badge"
-import { transcriptionApi } from "../api/transcription-api"
-import type { TranscriptionJob } from "../data/types"
-import { 
-  CheckCircle2, 
-  XCircle, 
-  Loader2, 
-  Clock, 
-  RotateCw,
-  Trash2,
-  Download 
-} from "lucide-react"
-import { formatDistanceToNow } from "date-fns"
+} from '@/components/ui/table'
+import { transcriptionApi } from '../api/transcription-api'
+import type { TranscriptionJob } from '../data/types'
 
 const statusIcons = {
-  completed: <CheckCircle2 className="h-4 w-4" />,
-  failed: <XCircle className="h-4 w-4" />,
-  processing: <Loader2 className="h-4 w-4 animate-spin" />,
-  pending: <Clock className="h-4 w-4" />,
+  completed: <CheckCircle2 className='h-4 w-4' />,
+  failed: <XCircle className='h-4 w-4' />,
+  processing: <Loader2 className='h-4 w-4 animate-spin' />,
+  pending: <Clock className='h-4 w-4' />,
 }
 
 const statusColors = {
-  completed: "bg-green-500",
-  failed: "bg-red-500",
-  processing: "bg-blue-500",
-  pending: "bg-yellow-500",
+  completed: 'bg-green-500',
+  failed: 'bg-red-500',
+  processing: 'bg-blue-500',
+  pending: 'bg-yellow-500',
 }
 
 function formatFileSize(bytes: number): string {
-  if (bytes === 0) return "0 Bytes"
+  if (bytes === 0) return '0 Bytes'
   const k = 1024
-  const sizes = ["Bytes", "KB", "MB", "GB"]
+  const sizes = ['Bytes', 'KB', 'MB', 'GB']
   const i = Math.floor(Math.log(bytes) / Math.log(k))
-  return Math.round(bytes / Math.pow(k, i) * 100) / 100 + " " + sizes[i]
+  return Math.round((bytes / Math.pow(k, i)) * 100) / 100 + ' ' + sizes[i]
 }
 
 function formatDuration(seconds: number | undefined): string {
-  if (!seconds) return "—"
+  if (!seconds) return '—'
   const mins = Math.floor(seconds / 60)
   const secs = Math.floor(seconds % 60)
   return `${mins}m ${secs}s`
@@ -64,10 +64,14 @@ function formatDuration(seconds: number | undefined): string {
 
 export function TranscriptionTable() {
   const queryClient = useQueryClient()
-  const [globalFilter, setGlobalFilter] = useState("")
+  const [globalFilter, setGlobalFilter] = useState('')
 
-  const { data: jobs = [], isLoading, refetch } = useQuery({
-    queryKey: ["transcription-jobs"],
+  const {
+    data: jobs = [],
+    isLoading,
+    refetch,
+  } = useQuery({
+    queryKey: ['transcription-jobs'],
     queryFn: () => transcriptionApi.getAllJobs(),
     refetchInterval: 5000, // Auto-refresh every 5 seconds
   })
@@ -75,7 +79,7 @@ export function TranscriptionTable() {
   const handleRetry = async (jobId: string) => {
     try {
       await transcriptionApi.retryJob(jobId)
-      queryClient.invalidateQueries({ queryKey: ["transcription-jobs"] })
+      queryClient.invalidateQueries({ queryKey: ['transcription-jobs'] })
     } catch {
       // Error handling could be improved with toast notifications
     }
@@ -84,7 +88,7 @@ export function TranscriptionTable() {
   const handleDelete = async (jobId: string) => {
     try {
       await transcriptionApi.deleteJob(jobId)
-      queryClient.invalidateQueries({ queryKey: ["transcription-jobs"] })
+      queryClient.invalidateQueries({ queryKey: ['transcription-jobs'] })
     } catch {
       // Error handling could be improved with toast notifications
     }
@@ -92,12 +96,12 @@ export function TranscriptionTable() {
 
   const columns: ColumnDef<TranscriptionJob>[] = [
     {
-      accessorKey: "status",
-      header: "Status",
+      accessorKey: 'status',
+      header: 'Status',
       cell: ({ row }) => {
-        const status = row.getValue("status") as TranscriptionJob["status"]
+        const status = row.getValue('status') as TranscriptionJob['status']
         return (
-          <Badge className={`${statusColors[status]} text-white gap-1`}>
+          <Badge className={`${statusColors[status]} gap-1 text-white`}>
             {statusIcons[status]}
             {status}
           </Badge>
@@ -105,34 +109,34 @@ export function TranscriptionTable() {
       },
     },
     {
-      accessorKey: "fileName",
-      header: "File Name",
+      accessorKey: 'fileName',
+      header: 'File Name',
       cell: ({ row }) => (
-        <div className="font-medium max-w-md truncate">
-          {row.getValue("fileName")}
+        <div className='max-w-md truncate font-medium'>
+          {row.getValue('fileName')}
         </div>
       ),
     },
     {
-      accessorKey: "fileSize",
-      header: "Size",
-      cell: ({ row }) => formatFileSize(row.getValue("fileSize")),
+      accessorKey: 'fileSize',
+      header: 'Size',
+      cell: ({ row }) => formatFileSize(row.getValue('fileSize')),
     },
     {
-      accessorKey: "progress",
-      header: "Progress",
+      accessorKey: 'progress',
+      header: 'Progress',
       cell: ({ row }) => {
-        const progress = row.getValue("progress") as number
+        const progress = row.getValue('progress') as number
         return (
-          <div className="w-full">
-            <div className="flex items-center gap-2">
-              <div className="w-full bg-gray-200 rounded-full h-2">
+          <div className='w-full'>
+            <div className='flex items-center gap-2'>
+              <div className='h-2 w-full rounded-full bg-gray-200'>
                 <div
-                  className="bg-blue-500 h-2 rounded-full transition-all"
+                  className='h-2 rounded-full bg-blue-500 transition-all'
                   style={{ width: `${progress}%` }}
                 />
               </div>
-              <span className="text-sm text-muted-foreground min-w-12">
+              <span className='text-muted-foreground min-w-12 text-sm'>
                 {progress}%
               </span>
             </div>
@@ -141,55 +145,56 @@ export function TranscriptionTable() {
       },
     },
     {
-      accessorKey: "createdAt",
-      header: "Created",
+      accessorKey: 'createdAt',
+      header: 'Created',
       cell: ({ row }) => {
-        const date = new Date(row.getValue("createdAt"))
+        const date = new Date(row.getValue('createdAt'))
         return (
-          <span className="text-sm text-muted-foreground">
+          <span className='text-muted-foreground text-sm'>
             {formatDistanceToNow(date, { addSuffix: true })}
           </span>
         )
       },
     },
     {
-      accessorKey: "completedAt",
-      header: "Duration",
+      accessorKey: 'completedAt',
+      header: 'Duration',
       cell: ({ row }) => {
         const started = row.original.startedAt
         const completed = row.original.completedAt
-        if (!started || !completed) return "—"
-        
-        const duration = (new Date(completed).getTime() - new Date(started).getTime()) / 1000
+        if (!started || !completed) return '—'
+
+        const duration =
+          (new Date(completed).getTime() - new Date(started).getTime()) / 1000
         return formatDuration(duration)
       },
     },
     {
-      id: "actions",
+      id: 'actions',
       cell: ({ row }) => {
         const job = row.original
         return (
-          <div className="flex gap-2">
-            {job.status === "failed" && (
+          <div className='flex gap-2'>
+            {job.status === 'failed' && (
               <Button
-                variant="ghost"
-                size="sm"
+                variant='ghost'
+                size='sm'
                 onClick={() => handleRetry(job.jobId)}
               >
-                <RotateCw className="h-4 w-4" />
+                <RotateCw className='h-4 w-4' />
               </Button>
             )}
-            {job.status === "completed" && (
-              <Button variant="ghost" size="sm">
-                <Download className="h-4 w-4" />
+            {job.status === 'completed' && (
+              <Button variant='ghost' size='sm'>
+                <Download className='h-4 w-4' />
               </Button>
             )}
             <Button
-              variant="ghost"
-              size="sm"
+              variant='ghost'
+              size='sm'
               onClick={() => handleDelete(job.jobId)}
             >
-              <Trash2 className="h-4 w-4" />
+              <Trash2 className='h-4 w-4' />
             </Button>
           </div>
         )
@@ -212,62 +217,68 @@ export function TranscriptionTable() {
 
   const stats = {
     total: jobs.length,
-    completed: jobs.filter((j) => j.status === "completed").length,
-    failed: jobs.filter((j) => j.status === "failed").length,
-    processing: jobs.filter((j) => j.status === "processing").length,
-    pending: jobs.filter((j) => j.status === "pending").length,
+    completed: jobs.filter((j) => j.status === 'completed').length,
+    failed: jobs.filter((j) => j.status === 'failed').length,
+    processing: jobs.filter((j) => j.status === 'processing').length,
+    pending: jobs.filter((j) => j.status === 'pending').length,
   }
 
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center h-96">
-        <Loader2 className="h-8 w-8 animate-spin" />
+      <div className='flex h-96 items-center justify-center'>
+        <Loader2 className='h-8 w-8 animate-spin' />
       </div>
     )
   }
 
   return (
-    <div className="space-y-4">
+    <div className='space-y-4'>
       {/* Stats Bar */}
-      <div className="grid grid-cols-5 gap-4">
-        <div className="bg-card rounded-lg border p-4">
-          <div className="text-2xl font-bold">{stats.total}</div>
-          <div className="text-sm text-muted-foreground">Total Files</div>
+      <div className='grid grid-cols-5 gap-4'>
+        <div className='bg-card rounded-lg border p-4'>
+          <div className='text-2xl font-bold'>{stats.total}</div>
+          <div className='text-muted-foreground text-sm'>Total Files</div>
         </div>
-        <div className="bg-card rounded-lg border p-4">
-          <div className="text-2xl font-bold text-green-600">{stats.completed}</div>
-          <div className="text-sm text-muted-foreground">Completed</div>
+        <div className='bg-card rounded-lg border p-4'>
+          <div className='text-2xl font-bold text-green-600'>
+            {stats.completed}
+          </div>
+          <div className='text-muted-foreground text-sm'>Completed</div>
         </div>
-        <div className="bg-card rounded-lg border p-4">
-          <div className="text-2xl font-bold text-red-600">{stats.failed}</div>
-          <div className="text-sm text-muted-foreground">Failed</div>
+        <div className='bg-card rounded-lg border p-4'>
+          <div className='text-2xl font-bold text-red-600'>{stats.failed}</div>
+          <div className='text-muted-foreground text-sm'>Failed</div>
         </div>
-        <div className="bg-card rounded-lg border p-4">
-          <div className="text-2xl font-bold text-blue-600">{stats.processing}</div>
-          <div className="text-sm text-muted-foreground">Processing</div>
+        <div className='bg-card rounded-lg border p-4'>
+          <div className='text-2xl font-bold text-blue-600'>
+            {stats.processing}
+          </div>
+          <div className='text-muted-foreground text-sm'>Processing</div>
         </div>
-        <div className="bg-card rounded-lg border p-4">
-          <div className="text-2xl font-bold text-yellow-600">{stats.pending}</div>
-          <div className="text-sm text-muted-foreground">Pending</div>
+        <div className='bg-card rounded-lg border p-4'>
+          <div className='text-2xl font-bold text-yellow-600'>
+            {stats.pending}
+          </div>
+          <div className='text-muted-foreground text-sm'>Pending</div>
         </div>
       </div>
 
       {/* Search and Controls */}
-      <div className="flex items-center justify-between">
+      <div className='flex items-center justify-between'>
         <Input
-          placeholder="Search files..."
+          placeholder='Search files...'
           value={globalFilter}
           onChange={(e) => setGlobalFilter(e.target.value)}
-          className="max-w-sm"
+          className='max-w-sm'
         />
-        <Button onClick={() => refetch()} variant="outline">
-          <RotateCw className="h-4 w-4 mr-2" />
+        <Button onClick={() => refetch()} variant='outline'>
+          <RotateCw className='mr-2 h-4 w-4' />
           Refresh
         </Button>
       </div>
 
       {/* Table */}
-      <div className="rounded-md border">
+      <div className='rounded-md border'>
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
@@ -303,7 +314,7 @@ export function TranscriptionTable() {
               <TableRow>
                 <TableCell
                   colSpan={columns.length}
-                  className="h-24 text-center"
+                  className='h-24 text-center'
                 >
                   No transcription jobs found.
                 </TableCell>
@@ -314,18 +325,18 @@ export function TranscriptionTable() {
       </div>
 
       {/* Pagination */}
-      <div className="flex items-center justify-end space-x-2">
+      <div className='flex items-center justify-end space-x-2'>
         <Button
-          variant="outline"
-          size="sm"
+          variant='outline'
+          size='sm'
           onClick={() => table.previousPage()}
           disabled={!table.getCanPreviousPage()}
         >
           Previous
         </Button>
         <Button
-          variant="outline"
-          size="sm"
+          variant='outline'
+          size='sm'
           onClick={() => table.nextPage()}
           disabled={!table.getCanNextPage()}
         >
