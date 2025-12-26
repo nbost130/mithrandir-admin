@@ -53,19 +53,43 @@ npm run preview
 
 ## 🌐 API Integration
 
-The dashboard integrates with:
+**⚠️ CRITICAL: This dashboard MUST use the Mithrandir Unified API (port 8080)**
 
-- **Transcription API**: http://100.77.230.53:9003/api/v1
-- **Unified API**: http://100.77.230.53:9003 (future)
+The dashboard integrates with the **Mithrandir Unified API**, which acts as an API Gateway/BFF (Backend for Frontend):
+
+- **Unified API**: http://100.77.230.53:8080 (API Gateway)
+  - `/api/dashboard/*` - Dashboard statistics and activity
+  - `/transcription/*` - Transcription jobs (proxied to Palantir backend)
+  - `/ssh-status` - System monitoring
+  - `/services/*` - Service health checks
+
+**DO NOT** point directly to backend services (e.g., port 9003). The Unified API provides:
+- ✅ Consistent API contracts
+- ✅ Centralized CORS, authentication, rate limiting
+- ✅ Service abstraction and flexibility
+- ✅ Data aggregation from multiple backend services
 
 ## 📝 Configuration
 
 Environment variables in `.env`:
 
-```
+```bash
+# ✅ CORRECT - Always use Unified API (port 8080)
 VITE_APP_TITLE="Mithrandir Admin"
+VITE_API_BASE_URL=http://100.77.230.53:8080
+VITE_TRANSCRIPTION_API=http://100.77.230.53:8080/transcription
+VITE_UNIFIED_API=http://100.77.230.53:8080
+
+# Network Configuration
+VITE_ALLOWED_HOSTS=dashboard.shire,admin.shire,mithrandir-admin.shire,localhost,100.77.230.53
+```
+
+**❌ INCORRECT - Do NOT use backend service ports directly:**
+
+```bash
+# ❌ WRONG - Do not point to backend services!
+VITE_API_BASE_URL=http://100.77.230.53:9003
 VITE_TRANSCRIPTION_API=http://100.77.230.53:9003/api/v1
-VITE_UNIFIED_API=http://100.77.230.53:9003
 ```
 
 ## 🎨 Project Structure
@@ -85,11 +109,69 @@ src/
 
 ## 🚀 Deployment
 
-The admin dashboard will be served on port 3000 and proxied through nginx.
+The admin dashboard is deployed on Mithrandir server:
+
+- **Service**: `mithrandir-admin.service` (systemd user service)
+- **Port**: 3000
+- **Location**: `/home/nbost/Projects/mithrandir-admin/`
+- **Auto-deploy**: Push to `main` branch triggers GitHub Actions deployment
+
+### Deployment Process
+
+```bash
+# Local development
+git add .
+git commit -m "feat: your changes"
+git push origin main
+
+# GitHub Actions automatically:
+# 1. Runs CI (lint, type-check, build)
+# 2. Deploys to production via SSH
+# 3. Restarts mithrandir-admin service
+```
+
+### Manual Deployment
+
+```bash
+# SSH to Mithrandir
+ssh mithrandir
+
+# Navigate to project
+cd /home/nbost/Projects/mithrandir-admin
+
+# Pull latest changes
+git pull
+
+# Install dependencies (if needed)
+npm install
+
+# Build
+npm run build
+
+# Restart service
+systemctl --user restart mithrandir-admin
+```
 
 ## 📖 Documentation
 
-See project documentation in `~/Documentation/`
+- [CI/CD Setup](./docs/CICD_SETUP.md) - GitHub Actions deployment configuration
+- [Deployment Guide](./docs/DEPLOYMENT.md) - Detailed deployment instructions
+- [Unified API Integration](../transcription-palantir/UNIFIED_API_INTEGRATION.md) - API architecture
+
+## 🏗️ Architecture
+
+```
+Mithrandir Admin Dashboard (Port 3000)
+           │
+           │ HTTP/REST
+           ▼
+Mithrandir Unified API (Port 8080)
+           │
+           ├─→ /api/dashboard/*  → Dashboard stats
+           ├─→ /transcription/*  → Transcription Palantir (Port 9003)
+           ├─→ /ssh-status       → System monitoring
+           └─→ /services/*       → Service health
+```
 
 ---
 
