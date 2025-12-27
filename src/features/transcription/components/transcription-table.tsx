@@ -39,6 +39,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
+import { cn } from '@/lib/utils'
 import { transcriptionApi } from '../api/transcription-api'
 import type { TranscriptionJob } from '../data/types'
 
@@ -88,6 +89,9 @@ const priorityConfig: { [key: string]: { label: string; color: string } } = {
 export function TranscriptionTable() {
   const queryClient = useQueryClient()
   const [globalFilter, setGlobalFilter] = useState('')
+  const [selectedStatus, setSelectedStatus] = useState<
+    null | 'pending' | 'processing' | 'completed' | 'failed'
+  >(null)
 
   const {
     data: jobs = [],
@@ -147,6 +151,12 @@ export function TranscriptionTable() {
         toast.error('An unknown error occurred')
       }
     }
+  }
+
+  const handleStatusFilter = (
+    status: 'pending' | 'processing' | 'completed' | 'failed'
+  ) => {
+    setSelectedStatus(selectedStatus === status ? null : status)
   }
 
   const columns: ColumnDef<TranscriptionJob>[] = [
@@ -293,8 +303,13 @@ export function TranscriptionTable() {
     },
   ]
 
+  // Filter jobs based on selected status
+  const filteredJobs = selectedStatus
+    ? jobs.filter((job) => job.status === selectedStatus)
+    : jobs
+
   const table = useReactTable({
-    data: jobs,
+    data: filteredJobs,
     columns,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
@@ -306,6 +321,7 @@ export function TranscriptionTable() {
     onGlobalFilterChange: setGlobalFilter,
   })
 
+  // Stats are always based on full jobs array (unfiltered)
   const stats = {
     total: jobs.length,
     completed: jobs.filter((j) => j.status === 'completed').length,
@@ -330,23 +346,47 @@ export function TranscriptionTable() {
           <div className='text-2xl font-bold'>{stats.total}</div>
           <div className='text-muted-foreground text-sm'>Total Files</div>
         </div>
-        <div className='bg-card rounded-lg border p-4'>
+        <div
+          className={cn(
+            'bg-card rounded-lg border p-4 cursor-pointer transition-all hover:shadow-md',
+            selectedStatus === 'completed' && 'ring-2 ring-primary'
+          )}
+          onClick={() => handleStatusFilter('completed')}
+        >
           <div className='text-2xl font-bold text-green-600'>
             {stats.completed}
           </div>
           <div className='text-muted-foreground text-sm'>Completed</div>
         </div>
-        <div className='bg-card rounded-lg border p-4'>
+        <div
+          className={cn(
+            'bg-card rounded-lg border p-4 cursor-pointer transition-all hover:shadow-md',
+            selectedStatus === 'failed' && 'ring-2 ring-primary'
+          )}
+          onClick={() => handleStatusFilter('failed')}
+        >
           <div className='text-2xl font-bold text-red-600'>{stats.failed}</div>
           <div className='text-muted-foreground text-sm'>Failed</div>
         </div>
-        <div className='bg-card rounded-lg border p-4'>
+        <div
+          className={cn(
+            'bg-card rounded-lg border p-4 cursor-pointer transition-all hover:shadow-md',
+            selectedStatus === 'processing' && 'ring-2 ring-primary'
+          )}
+          onClick={() => handleStatusFilter('processing')}
+        >
           <div className='text-2xl font-bold text-blue-600'>
             {stats.processing}
           </div>
           <div className='text-muted-foreground text-sm'>Processing</div>
         </div>
-        <div className='bg-card rounded-lg border p-4'>
+        <div
+          className={cn(
+            'bg-card rounded-lg border p-4 cursor-pointer transition-all hover:shadow-md',
+            selectedStatus === 'pending' && 'ring-2 ring-primary'
+          )}
+          onClick={() => handleStatusFilter('pending')}
+        >
           <div className='text-2xl font-bold text-yellow-600'>
             {stats.pending}
           </div>
