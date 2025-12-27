@@ -1,6 +1,8 @@
 import { useState } from 'react'
 import { formatDistanceToNow } from 'date-fns'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
+import { toast } from 'sonner'
+import { AxiosError } from 'axios'
 import {
   type ColumnDef,
   flexRender,
@@ -118,9 +120,32 @@ export function TranscriptionTable() {
   const handlePriorityChange = async (jobId: string, priority: number) => {
     try {
       await transcriptionApi.updateJobPriority(jobId, priority)
+      toast.success('Priority updated successfully')
       queryClient.invalidateQueries({ queryKey: ['transcription-jobs'] })
-    } catch {
-      // silent catch
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.error('Failed to update priority:', error)
+      if (error instanceof AxiosError) {
+        if (error.response?.status === 409) {
+          toast.error('Cannot update priority', {
+            description: 'Job is already completed or failed',
+          })
+        } else if (error.response?.status === 404) {
+          toast.error('Job not found', {
+            description: 'The job may have been deleted',
+          })
+        } else {
+          toast.error('Failed to update priority', {
+            description: error.message,
+          })
+        }
+      } else if (error instanceof Error) {
+        toast.error('Failed to update priority', {
+          description: error.message,
+        })
+      } else {
+        toast.error('An unknown error occurred')
+      }
     }
   }
 
