@@ -19,17 +19,19 @@ import {
   RotateCw,
   Trash2,
   Download,
+  ChevronDown,
 } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select'
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu'
 import {
   Table,
   TableBody,
@@ -185,26 +187,54 @@ export function TranscriptionTable() {
           job.status === 'completed' || job.status === 'failed'
 
         return (
-          <div className='flex items-center gap-2'>
-            <Badge className={config.color}>{config.label}</Badge>
-            <Select
-              value={String(priority)}
-              onValueChange={(value) =>
-                handlePriorityChange(job.jobId, Number(value))
-              }
-              disabled={isFinished}
-            >
-              <SelectTrigger className='w-[110px]'>
-                <SelectValue placeholder='Set Priority' />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value='1'>Urgent</SelectItem>
-                <SelectItem value='2'>High</SelectItem>
-                <SelectItem value='3'>Normal</SelectItem>
-                <SelectItem value='4'>Low</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button
+                variant='ghost'
+                className={`${config.color} h-6 cursor-pointer px-2.5 hover:opacity-80`}
+                disabled={isFinished}
+              >
+                {config.label}
+                <ChevronDown className='ml-1 h-3 w-3' />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align='start'>
+              <DropdownMenuLabel>Set Priority</DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem
+                onClick={() => handlePriorityChange(job.jobId, 1)}
+              >
+                <div className='flex items-center gap-2'>
+                  <span>🔥</span>
+                  <span className='text-red-800'>Urgent</span>
+                </div>
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                onClick={() => handlePriorityChange(job.jobId, 2)}
+              >
+                <div className='flex items-center gap-2'>
+                  <span>⚡</span>
+                  <span className='text-orange-800'>High</span>
+                </div>
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                onClick={() => handlePriorityChange(job.jobId, 3)}
+              >
+                <div className='flex items-center gap-2'>
+                  <span>✓</span>
+                  <span className='text-blue-800'>Normal</span>
+                </div>
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                onClick={() => handlePriorityChange(job.jobId, 4)}
+              >
+                <div className='flex items-center gap-2'>
+                  <span>—</span>
+                  <span className='text-gray-800'>Low</span>
+                </div>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         )
       },
     },
