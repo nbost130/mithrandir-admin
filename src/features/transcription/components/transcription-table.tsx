@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
 import { formatDistanceToNow } from 'date-fns'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { toast } from 'sonner'
@@ -7,7 +7,6 @@ import {
   type ColumnDef,
   flexRender,
   getCoreRowModel,
-  getFilteredRowModel,
   getPaginationRowModel,
   getSortedRowModel,
   useReactTable,
@@ -303,10 +302,25 @@ export function TranscriptionTable() {
     },
   ]
 
-  // Filter jobs based on selected status
-  const filteredJobs = selectedStatus
-    ? jobs.filter((job) => job.status === selectedStatus)
-    : jobs
+  // Filter jobs based on selected status and search term
+  const filteredJobs = useMemo(() => {
+    let filtered = jobs
+
+    // Filter by status
+    if (selectedStatus) {
+      filtered = filtered.filter((job) => job.status === selectedStatus)
+    }
+
+    // Filter by search term (filename)
+    if (globalFilter) {
+      const searchLower = globalFilter.toLowerCase()
+      filtered = filtered.filter((job) =>
+        job.filename.toLowerCase().includes(searchLower)
+      )
+    }
+
+    return filtered
+  }, [jobs, selectedStatus, globalFilter])
 
   const table = useReactTable({
     data: filteredJobs,
@@ -314,11 +328,6 @@ export function TranscriptionTable() {
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     getSortedRowModel: getSortedRowModel(),
-    getFilteredRowModel: getFilteredRowModel(),
-    state: {
-      globalFilter,
-    },
-    onGlobalFilterChange: setGlobalFilter,
   })
 
   // Stats are always based on full jobs array (unfiltered)
