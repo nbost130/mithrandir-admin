@@ -39,6 +39,14 @@ export const transcriptionApi = {
     await axios.delete(`${API_BASE}/jobs/${jobId}`)
   },
 
+  // Update job priority
+  async updateJobPriority(jobId: string, priority: number): Promise<void> {
+    await axios.patch(
+      `http://100.77.230.53:9003/api/v1/transcription/jobs/${jobId}`,
+      { priority },
+    )
+  },
+
   // Get job details
   async getJob(jobId: string): Promise<TranscriptionJob> {
     const response = await axios.get<{

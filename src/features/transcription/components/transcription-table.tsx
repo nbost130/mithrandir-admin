@@ -23,6 +23,13 @@ import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
+import {
   Table,
   TableBody,
   TableCell,
@@ -62,6 +69,20 @@ function formatDuration(seconds: number | undefined): string {
   return `${mins}m ${secs}s`
 }
 
+const priorityMap: { [key: number]: string } = {
+  1: 'URGENT',
+  2: 'HIGH',
+  3: 'NORMAL',
+  4: 'LOW',
+}
+
+const priorityConfig: { [key: string]: { label: string; color: string } } = {
+  URGENT: { label: 'Urgent', color: 'bg-red-100 text-red-800' },
+  HIGH: { label: 'High', color: 'bg-orange-100 text-orange-800' },
+  NORMAL: { label: 'Normal', color: 'bg-blue-100 text-blue-800' },
+  LOW: { label: 'Low', color: 'bg-gray-100 text-gray-800' },
+}
+
 export function TranscriptionTable() {
   const queryClient = useQueryClient()
   const [globalFilter, setGlobalFilter] = useState('')
@@ -94,6 +115,15 @@ export function TranscriptionTable() {
     }
   }
 
+  const handlePriorityChange = async (jobId: string, priority: number) => {
+    try {
+      await transcriptionApi.updateJobPriority(jobId, priority)
+      queryClient.invalidateQueries({ queryKey: ['transcription-jobs'] })
+    } catch {
+      // silent catch
+    }
+  }
+
   const columns: ColumnDef<TranscriptionJob>[] = [
     {
       accessorKey: 'status',
@@ -105,6 +135,42 @@ export function TranscriptionTable() {
             {statusIcons[status]}
             {status}
           </Badge>
+        )
+      },
+    },
+    {
+      accessorKey: 'priority',
+      header: 'Priority',
+      cell: ({ row }) => {
+        const job = row.original
+        const priority = job.priority || 3 // Default to Normal
+        const priorityName =
+          priorityMap[priority as keyof typeof priorityMap] || 'NORMAL'
+        const config = priorityConfig[priorityName]
+        const isFinished =
+          job.status === 'completed' || job.status === 'failed'
+
+        return (
+          <div className='flex items-center gap-2'>
+            <Badge className={config.color}>{config.label}</Badge>
+            <Select
+              value={String(priority)}
+              onValueChange={(value) =>
+                handlePriorityChange(job.jobId, Number(value))
+              }
+              disabled={isFinished}
+            >
+              <SelectTrigger className='w-[110px]'>
+                <SelectValue placeholder='Set Priority' />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value='1'>Urgent</SelectItem>
+                <SelectItem value='2'>High</SelectItem>
+                <SelectItem value='3'>Normal</SelectItem>
+                <SelectItem value='4'>Low</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
         )
       },
     },
