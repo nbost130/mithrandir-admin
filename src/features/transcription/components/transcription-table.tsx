@@ -315,7 +315,7 @@ export function TranscriptionTable() {
     if (globalFilter) {
       const searchLower = globalFilter.toLowerCase()
       filtered = filtered.filter((job) =>
-        job.filename.toLowerCase().includes(searchLower)
+        job.fileName.toLowerCase().includes(searchLower)
       )
     }
 
