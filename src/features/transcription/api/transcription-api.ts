@@ -1,9 +1,29 @@
 import axios from 'axios'
 import type { JobsResponse, TranscriptionJob } from '../data/types'
 
-const API_BASE =
-  import.meta.env.VITE_TRANSCRIPTION_API ||
-  'http://100.77.230.53:8080/transcription'
+/**
+ * Transcription API Client
+ *
+ * Interfaces with the Unified API (mithrandir-unified-api) on port 8080.
+ * The Unified API acts as an API Gateway/BFF (Backend for Frontend) that
+ * proxies requests to the transcription-palantir backend service (port 9003).
+ *
+ * Architecture:
+ * Frontend → Unified API (8080) → Transcription Palantir (9003)
+ *
+ * @requires VITE_TRANSCRIPTION_API - Environment variable for the Unified API transcription endpoint
+ */
+
+// Validate required environment variable - NO hardcoded fallbacks!
+if (!import.meta.env.VITE_TRANSCRIPTION_API) {
+  throw new Error(
+    'VITE_TRANSCRIPTION_API environment variable is not set. ' +
+    'This should point to the Unified API transcription endpoint ' +
+    '(e.g., http://100.77.230.53:8080/transcription)'
+  )
+}
+
+const API_BASE = import.meta.env.VITE_TRANSCRIPTION_API
 
 export const transcriptionApi = {
   // Fetch jobs by status
