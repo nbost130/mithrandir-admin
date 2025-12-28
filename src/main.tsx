@@ -9,7 +9,9 @@ import {
 import { RouterProvider, createRouter } from '@tanstack/react-router'
 import { toast } from 'sonner'
 import { useAuthStore } from '@/stores/auth-store'
+import ErrorBoundary from '@/components/ErrorBoundary'
 import { handleServerError } from '@/lib/handle-server-error'
+import { logError } from './lib/errorTracking'
 import { DirectionProvider } from './context/direction-provider'
 import { FontProvider } from './context/font-provider'
 import { ThemeProvider } from './context/theme-provider'
@@ -17,6 +19,27 @@ import { ThemeProvider } from './context/theme-provider'
 import { routeTree } from './routeTree.gen'
 // Styles
 import './styles/index.css'
+
+// Global error handling for uncaught errors and unhandled promise rejections
+window.addEventListener('error', (event) => {
+  if (event.error instanceof Error) {
+    logError(event.error, { source: 'global-error-handler' });
+    toast.error('An unexpected error occurred. Please try again later.');
+  } else {
+    logError(new Error('An unknown error occurred'), { source: 'global-error-handler', originalEvent: event });
+    toast.error('An unexpected error occurred. Please try again later.');
+  }
+});
+
+window.addEventListener('unhandledrejection', (event) => {
+  if (event.reason instanceof Error) {
+    logError(event.reason, { source: 'unhandled-rejection-handler' });
+    toast.error(`An unhandled promise rejection occurred: ${event.reason.message}`);
+  } else {
+    logError(new Error('An unknown promise rejection occurred'), { source: 'unhandled-rejection-handler', originalEvent: event });
+    toast.error('An unhandled promise rejection occurred.');
+  }
+});
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -93,15 +116,17 @@ if (!rootElement.innerHTML) {
   const root = ReactDOM.createRoot(rootElement)
   root.render(
     <StrictMode>
-      <QueryClientProvider client={queryClient}>
-        <ThemeProvider>
-          <FontProvider>
-            <DirectionProvider>
-              <RouterProvider router={router} />
-            </DirectionProvider>
-          </FontProvider>
-        </ThemeProvider>
-      </QueryClientProvider>
+      <ErrorBoundary>
+        <QueryClientProvider client={queryClient}>
+          <ThemeProvider>
+            <FontProvider>
+              <DirectionProvider>
+                <RouterProvider router={router} />
+              </DirectionProvider>
+            </FontProvider>
+          </ThemeProvider>
+        </QueryClientProvider>
+      </ErrorBoundary>
     </StrictMode>
   )
 }
