@@ -1,14 +1,14 @@
 import {
+  AlertCircle,
   ArrowDown,
   ArrowRight,
   ArrowUp,
-  Circle,
   CheckCircle,
-  AlertCircle,
-  Timer,
-  HelpCircle,
+  Circle,
   CircleOff,
-} from 'lucide-react'
+  HelpCircle,
+  Timer,
+} from 'lucide-react';
 
 export const labels = [
   {
@@ -23,7 +23,7 @@ export const labels = [
     value: 'documentation',
     label: 'Documentation',
   },
-]
+];
 
 export const statuses = [
   {
@@ -51,7 +51,7 @@ export const statuses = [
     value: 'canceled' as const,
     icon: CircleOff,
   },
-]
+];
 
 export const priorities = [
   {
@@ -74,4 +74,4 @@ export const priorities = [
     value: 'critical' as const,
     icon: AlertCircle,
   },
-]
+];

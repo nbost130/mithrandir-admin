@@ -1,20 +1,20 @@
 import {
-  IconTelegram,
-  IconNotion,
-  IconFigma,
-  IconTrello,
-  IconSlack,
-  IconZoom,
-  IconStripe,
-  IconGmail,
-  IconMedium,
-  IconSkype,
+  IconDiscord,
   IconDocker,
+  IconFigma,
   IconGithub,
   IconGitlab,
-  IconDiscord,
+  IconGmail,
+  IconMedium,
+  IconNotion,
+  IconSkype,
+  IconSlack,
+  IconStripe,
+  IconTelegram,
+  IconTrello,
   IconWhatsapp,
-} from '@/assets/brand-icons'
+  IconZoom,
+} from '@/assets/brand-icons';
 
 export const apps = [
   {
@@ -107,4 +107,4 @@ export const apps = [
     connected: false,
     desc: 'Easily integrate WhatsApp for direct messaging.',
   },
-]
+];

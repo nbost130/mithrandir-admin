@@ -1,5 +1,5 @@
-import { apiClient } from '@/lib/apiClient'
-import type { JobsResponse, TranscriptionJob } from '../data/types'
+import { apiClient } from '@/lib/apiClient';
+import type { JobsResponse, TranscriptionJob } from '../data/types';
 
 /**
  * Transcription API Client
@@ -17,14 +17,12 @@ import type { JobsResponse, TranscriptionJob } from '../data/types'
 export const transcriptionApi = {
   // Fetch jobs by status
   async getJobs(status?: string, limit = 100): Promise<TranscriptionJob[]> {
-    const params = new URLSearchParams()
-    if (status) params.append('status', status)
-    params.append('limit', limit.toString())
+    const params = new URLSearchParams();
+    if (status) params.append('status', status);
+    params.append('limit', limit.toString());
 
-    const response = await apiClient.get<JobsResponse>(
-      `/api/transcription/jobs?${params.toString()}`
-    )
-    return response.data.data
+    const response = await apiClient.get<JobsResponse>(`/api/transcription/jobs?${params.toString()}`);
+    return response.data.data;
   },
 
   // Fetch all jobs
@@ -34,41 +32,41 @@ export const transcriptionApi = {
       this.getJobs('processing'),
       this.getJobs('completed'),
       this.getJobs('failed'),
-    ])
-    return [...pending, ...processing, ...completed, ...failed]
+    ]);
+    return [...pending, ...processing, ...completed, ...failed];
   },
 
   // Retry a failed job
   async retryJob(jobId: string): Promise<void> {
-    await apiClient.post(`/api/transcription/jobs/${jobId}/retry`)
+    await apiClient.post(`/api/transcription/jobs/${jobId}/retry`);
   },
 
   // Delete a job
   async deleteJob(jobId: string): Promise<void> {
-    await apiClient.delete(`/api/transcription/jobs/${jobId}`)
+    await apiClient.delete(`/api/transcription/jobs/${jobId}`);
   },
 
   // Update job priority
   async updateJobPriority(jobId: string, priority: number): Promise<void> {
-    await apiClient.patch(`/api/transcription/jobs/${jobId}`, { priority })
+    await apiClient.patch(`/api/transcription/jobs/${jobId}`, { priority });
   },
 
   // Get job details
   async getJob(jobId: string): Promise<TranscriptionJob> {
     const response = await apiClient.get<{
-      success: boolean
-      data: TranscriptionJob
-    }>(`/api/transcription/jobs/${jobId}`)
-    return response.data.data
+      success: boolean;
+      data: TranscriptionJob;
+    }>(`/api/transcription/jobs/${jobId}`);
+    return response.data.data;
   },
 
   // Health check
   async healthCheck(): Promise<boolean> {
     try {
-      const response = await apiClient.get('/api/transcription/health')
-      return response.data.status === 'healthy'
+      const response = await apiClient.get('/api/transcription/health');
+      return response.data.status === 'healthy';
     } catch {
-      return false
+      return false;
     }
   },
-}
+};
