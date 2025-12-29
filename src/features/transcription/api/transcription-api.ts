@@ -27,13 +27,8 @@ export const transcriptionApi = {
 
   // Fetch all jobs
   async getAllJobs(): Promise<TranscriptionJob[]> {
-    const [pending, processing, completed, failed] = await Promise.all([
-      this.getJobs('pending'),
-      this.getJobs('processing'),
-      this.getJobs('completed'),
-      this.getJobs('failed'),
-    ]);
-    return [...pending, ...processing, ...completed, ...failed];
+    // Call getJobs without a status to fetch all jobs in a single API call
+    return this.getJobs();
   },
 
   // Retry a failed job

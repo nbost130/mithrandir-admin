@@ -102,7 +102,6 @@ describe('TranscriptionTable', () => {
     });
 
     // Click on 'Completed' filter
-    const completedFilter = screen.getByText('Completed');
     // The text is inside a div, the click handler is on the parent div.
     // We can find the parent by text and click it.
     // Or simpler:
