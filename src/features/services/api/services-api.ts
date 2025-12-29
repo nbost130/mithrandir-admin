@@ -1,4 +1,4 @@
-import axios from 'axios'
+import { apiClient } from '@/lib/apiClient'
 
 /**
  * Services API Client
@@ -7,18 +7,11 @@ import axios from 'axios'
  * The Unified API acts as an API Gateway/BFF (Backend for Frontend) that
  * aggregates data from all backend services.
  *
- * @requires VITE_API_BASE_URL - Environment variable for the Unified API base URL
+ * Uses the centralized apiClient which handles:
+ * - Authorization header injection
+ * - Base URL configuration
+ * - Global error handling
  */
-
-// Validate required environment variable - NO hardcoded fallbacks!
-if (!import.meta.env.VITE_API_BASE_URL) {
-  throw new Error(
-    'VITE_API_BASE_URL environment variable is not set. ' +
-    'This should point to the Unified API (e.g., http://100.77.230.53:8080)'
-  )
-}
-
-const API_BASE = import.meta.env.VITE_API_BASE_URL
 
 export interface ServiceDetails {
   name: string
@@ -54,8 +47,8 @@ export interface ApiResponse<T> {
 
 export const servicesApi = {
   async getHealth(): Promise<ServicesHealthResponse> {
-    const response = await axios.get<ApiResponse<ServicesHealthResponse>>(
-      `${API_BASE}/api/services/health`
+    const response = await apiClient.get<ApiResponse<ServicesHealthResponse>>(
+      '/api/services/health'
     )
     return response.data.data
   },

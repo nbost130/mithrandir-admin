@@ -20,6 +20,30 @@ import { routeTree } from './routeTree.gen'
 // Styles
 import './styles/index.css'
 
+/**
+ * Validates that a redirect URL is a safe, internal path.
+ * @param url The URL to validate.
+ * @returns `true` if the URL is a valid internal redirect, `false` otherwise.
+ */
+function isValidRedirect(url: string | undefined | null): boolean {
+  if (!url) {
+    return false
+  }
+  // Must start with '/'
+  if (!url.startsWith('/')) {
+    return false
+  }
+  // Must not start with '//' (protocol-relative URLs)
+  if (url.startsWith('//')) {
+    return false
+  }
+  // Must not contain a protocol like 'http:' or 'https:'
+  if (url.includes('://')) {
+    return false
+  }
+  return true
+}
+
 // Global error handling for uncaught errors and unhandled promise rejections
 window.addEventListener('error', (event) => {
   if (event.error instanceof Error) {
@@ -77,7 +101,8 @@ const queryClient = new QueryClient({
         if (error.response?.status === 401) {
           toast.error('Session expired!')
           useAuthStore.getState().auth.reset()
-          const redirect = `${router.history.location.href}`
+          const unsafeRedirect = router.history.location.pathname
+          const redirect = isValidRedirect(unsafeRedirect) ? unsafeRedirect : '/'
           router.navigate({ to: '/sign-in', search: { redirect } })
         }
         if (error.response?.status === 500) {

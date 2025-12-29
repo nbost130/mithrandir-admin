@@ -1,4 +1,4 @@
-import axios from 'axios'
+import { apiClient } from '@/lib/apiClient'
 import type { JobsResponse, TranscriptionJob } from '../data/types'
 
 /**
@@ -8,22 +8,11 @@ import type { JobsResponse, TranscriptionJob } from '../data/types'
  * The Unified API acts as an API Gateway/BFF (Backend for Frontend) that
  * proxies requests to the transcription-palantir backend service (port 9003).
  *
- * Architecture:
- * Frontend → Unified API (8080) → Transcription Palantir (9003)
- *
- * @requires VITE_TRANSCRIPTION_API - Environment variable for the Unified API transcription endpoint
+ * Uses the centralized apiClient which handles:
+ * - Authorization header injection
+ * - Base URL configuration
+ * - Global error handling
  */
-
-// Validate required environment variable - NO hardcoded fallbacks!
-if (!import.meta.env.VITE_TRANSCRIPTION_API) {
-  throw new Error(
-    'VITE_TRANSCRIPTION_API environment variable is not set. ' +
-    'This should point to the Unified API transcription endpoint ' +
-    '(e.g., http://100.77.230.53:8080/transcription)'
-  )
-}
-
-const API_BASE = import.meta.env.VITE_TRANSCRIPTION_API
 
 export const transcriptionApi = {
   // Fetch jobs by status
@@ -32,8 +21,8 @@ export const transcriptionApi = {
     if (status) params.append('status', status)
     params.append('limit', limit.toString())
 
-    const response = await axios.get<JobsResponse>(
-      `${API_BASE}/jobs?${params.toString()}`
+    const response = await apiClient.get<JobsResponse>(
+      `/api/transcription/jobs?${params.toString()}`
     )
     return response.data.data
   },
@@ -51,34 +40,32 @@ export const transcriptionApi = {
 
   // Retry a failed job
   async retryJob(jobId: string): Promise<void> {
-    await axios.post(`${API_BASE}/jobs/${jobId}/retry`)
+    await apiClient.post(`/api/transcription/jobs/${jobId}/retry`)
   },
 
   // Delete a job
   async deleteJob(jobId: string): Promise<void> {
-    await axios.delete(`${API_BASE}/jobs/${jobId}`)
+    await apiClient.delete(`/api/transcription/jobs/${jobId}`)
   },
 
   // Update job priority
   async updateJobPriority(jobId: string, priority: number): Promise<void> {
-    await axios.patch(`${API_BASE}/jobs/${jobId}`, { priority })
+    await apiClient.patch(`/api/transcription/jobs/${jobId}`, { priority })
   },
 
   // Get job details
   async getJob(jobId: string): Promise<TranscriptionJob> {
-    const response = await axios.get<{
+    const response = await apiClient.get<{
       success: boolean
       data: TranscriptionJob
-    }>(`${API_BASE}/jobs/${jobId}`)
+    }>(`/api/transcription/jobs/${jobId}`)
     return response.data.data
   },
 
   // Health check
   async healthCheck(): Promise<boolean> {
     try {
-      const response = await axios.get(
-        `${API_BASE.replace('/api/v1', '')}/api/v1/health`
-      )
+      const response = await apiClient.get('/api/transcription/health')
       return response.data.status === 'healthy'
     } catch {
       return false
