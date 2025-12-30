@@ -107,9 +107,37 @@ export function TranscriptionTable() {
   const handleRetry = async (jobId: string) => {
     try {
       await transcriptionApi.retryJob(jobId)
+      toast.success('Job queued for retry')
       queryClient.invalidateQueries({ queryKey: ['transcription-jobs'] })
-    } catch {
-      // Error handling could be improved with toast notifications
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.error('Failed to retry job:', error)
+      if (error instanceof AxiosError) {
+        const errorMessage = error.response?.data?.error || error.message
+        if (error.response?.status === 400) {
+          toast.error('Cannot retry job', {
+            description: errorMessage,
+          })
+        } else if (error.response?.status === 409) {
+          toast.error('Cannot retry job', {
+            description: 'Job is not in a failed state',
+          })
+        } else if (error.response?.status === 404) {
+          toast.error('Job not found', {
+            description: 'The job may have been deleted',
+          })
+        } else {
+          toast.error('Failed to retry job', {
+            description: errorMessage,
+          })
+        }
+      } else if (error instanceof Error) {
+        toast.error('Failed to retry job', {
+          description: error.message,
+        })
+      } else {
+        toast.error('An unknown error occurred')
+      }
     }
   }
 
@@ -458,9 +486,9 @@ export function TranscriptionTable() {
                     {header.isPlaceholder
                       ? null
                       : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext()
-                        )}
+                        header.column.columnDef.header,
+                        header.getContext()
+                      )}
                   </TableHead>
                 ))}
               </TableRow>
