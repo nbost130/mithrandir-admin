@@ -60,7 +60,7 @@ jobs:
           
           echo "✅ Verifying deployment..."
           sleep 5
-          curl -f http://localhost:3000 || exit 1
+          curl -f http://localhost:3334 || exit 1
           
           echo "🎉 Deployment successful!"
         ENDSSH
