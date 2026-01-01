@@ -45,8 +45,9 @@ jobs:
           echo "📂 Navigating to project directory..."
           cd /home/nbost/Projects/mithrandir-admin
           
-          echo "📥 Pulling latest changes..."
-          git pull origin main
+          echo "🔄 Syncing with GitHub (using reset to handle divergence)..."
+          git fetch origin main
+          git reset --hard origin/main
           
           echo "📦 Installing dependencies..."
           npm install
