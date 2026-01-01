@@ -36,7 +36,13 @@ Modern, professional admin dashboard for managing all Mithrandir services.
 ```bash
 cd ~/Projects/mithrandir-admin
 npm install
+pnpm install
 ```
+
+> 💡 **Why both?** This repo keeps both `package-lock.json` **and** `pnpm-lock.yaml`.
+> GitHub Actions installs dependencies with `pnpm install --frozen-lockfile`, so any
+> change to `package.json` must be followed by *both* commands to keep the lockfiles in
+> sync and avoid CI failures.
 
 ## 🔧 Development
 

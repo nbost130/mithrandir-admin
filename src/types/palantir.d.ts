@@ -14,5 +14,5 @@
  */
 
 // Placeholder - run `npm run generate:types` to generate actual types
-export type paths = Record<string, any>;
-export type components = Record<string, any>;
+export type paths = Record<string, unknown>;
+export type components = Record<string, unknown>;

@@ -380,6 +380,8 @@ export function TranscriptionTable() {
     return filtered
   }, [jobs, selectedStatus, globalFilter])
 
+  // TanStack Table exposes non-memoizable functions but the UI only consumes table state
+  // eslint-disable-next-line react-hooks/incompatible-library
   const table = useReactTable({
     data: filteredJobs,
     columns,
