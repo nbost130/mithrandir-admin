@@ -1,8 +1,7 @@
 import { useState, useMemo } from 'react'
+import { AxiosError } from 'axios'
 import { formatDistanceToNow } from 'date-fns'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
-import { toast } from 'sonner'
-import { AxiosError } from 'axios'
 import {
   type ColumnDef,
   flexRender,
@@ -21,9 +20,10 @@ import {
   Download,
   ChevronDown,
 } from 'lucide-react'
+import { toast } from 'sonner'
+import { cn } from '@/lib/utils'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -32,6 +32,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
+import { Input } from '@/components/ui/input'
 import {
   Table,
   TableBody,
@@ -40,7 +41,6 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
-import { cn } from '@/lib/utils'
 import { transcriptionApi } from '../api/transcription-api'
 import type { TranscriptionJob } from '../data/types'
 
@@ -211,8 +211,7 @@ export function TranscriptionTable() {
         const priorityName =
           priorityMap[priority as keyof typeof priorityMap] || 'NORMAL'
         const config = priorityConfig[priorityName]
-        const isFinished =
-          job.status === 'completed' || job.status === 'failed'
+        const isFinished = job.status === 'completed' || job.status === 'failed'
 
         return (
           <DropdownMenu>
@@ -380,6 +379,8 @@ export function TranscriptionTable() {
     return filtered
   }, [jobs, selectedStatus, globalFilter])
 
+  // TanStack Table exposes non-memoizable functions but the UI only consumes table state
+  // eslint-disable-next-line react-hooks/incompatible-library
   const table = useReactTable({
     data: filteredJobs,
     columns,
@@ -415,8 +416,8 @@ export function TranscriptionTable() {
         </div>
         <div
           className={cn(
-            'bg-card rounded-lg border p-4 cursor-pointer transition-all hover:shadow-md',
-            selectedStatus === 'completed' && 'ring-2 ring-primary'
+            'bg-card cursor-pointer rounded-lg border p-4 transition-all hover:shadow-md',
+            selectedStatus === 'completed' && 'ring-primary ring-2'
           )}
           onClick={() => handleStatusFilter('completed')}
         >
@@ -427,8 +428,8 @@ export function TranscriptionTable() {
         </div>
         <div
           className={cn(
-            'bg-card rounded-lg border p-4 cursor-pointer transition-all hover:shadow-md',
-            selectedStatus === 'failed' && 'ring-2 ring-primary'
+            'bg-card cursor-pointer rounded-lg border p-4 transition-all hover:shadow-md',
+            selectedStatus === 'failed' && 'ring-primary ring-2'
           )}
           onClick={() => handleStatusFilter('failed')}
         >
@@ -437,8 +438,8 @@ export function TranscriptionTable() {
         </div>
         <div
           className={cn(
-            'bg-card rounded-lg border p-4 cursor-pointer transition-all hover:shadow-md',
-            selectedStatus === 'processing' && 'ring-2 ring-primary'
+            'bg-card cursor-pointer rounded-lg border p-4 transition-all hover:shadow-md',
+            selectedStatus === 'processing' && 'ring-primary ring-2'
           )}
           onClick={() => handleStatusFilter('processing')}
         >
@@ -449,8 +450,8 @@ export function TranscriptionTable() {
         </div>
         <div
           className={cn(
-            'bg-card rounded-lg border p-4 cursor-pointer transition-all hover:shadow-md',
-            selectedStatus === 'pending' && 'ring-2 ring-primary'
+            'bg-card cursor-pointer rounded-lg border p-4 transition-all hover:shadow-md',
+            selectedStatus === 'pending' && 'ring-primary ring-2'
           )}
           onClick={() => handleStatusFilter('pending')}
         >
@@ -486,9 +487,9 @@ export function TranscriptionTable() {
                     {header.isPlaceholder
                       ? null
                       : flexRender(
-                        header.column.columnDef.header,
-                        header.getContext()
-                      )}
+                          header.column.columnDef.header,
+                          header.getContext()
+                        )}
                   </TableHead>
                 ))}
               </TableRow>

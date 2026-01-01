@@ -14,7 +14,7 @@ import axios from 'axios'
 if (!import.meta.env.VITE_API_BASE_URL) {
   throw new Error(
     'VITE_API_BASE_URL environment variable is not set. ' +
-    'This should point to the Unified API (e.g., http://100.77.230.53:8080)'
+      'This should point to the Unified API (e.g., http://100.77.230.53:8080)'
   )
 }
 

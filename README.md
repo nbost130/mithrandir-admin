@@ -36,7 +36,13 @@ Modern, professional admin dashboard for managing all Mithrandir services.
 ```bash
 cd ~/Projects/mithrandir-admin
 npm install
+pnpm install
 ```
+
+> 💡 **Why both?** This repo keeps both `package-lock.json` **and** `pnpm-lock.yaml`.
+> GitHub Actions installs dependencies with `pnpm install --frozen-lockfile`, so any
+> change to `package.json` must be followed by _both_ commands to keep the lockfiles in
+> sync and avoid CI failures.
 
 ## 🔧 Development
 
@@ -64,6 +70,7 @@ The dashboard integrates with the **Mithrandir Unified API**, which acts as an A
   - `/services/*` - Service health checks
 
 **DO NOT** point directly to backend services (e.g., port 9003). The Unified API provides:
+
 - ✅ Consistent API contracts
 - ✅ Centralized CORS, authentication, rate limiting
 - ✅ Service abstraction and flexibility
@@ -109,14 +116,17 @@ TRANSCRIPTION_API_URL=http://palantir.tailnet:3001 npm run generate:types
 **Generated file:** `src/types/palantir.d.ts`
 
 **Usage example:**
-```typescript
-import type { paths, components } from './types/palantir';
 
-type JobsResponse = paths['/api/v1/jobs']['get']['responses']['200']['content']['application/json'];
-type Job = components['schemas']['Job'];
+```typescript
+import type { paths, components } from './types/palantir'
+
+type JobsResponse =
+  paths['/api/v1/jobs']['get']['responses']['200']['content']['application/json']
+type Job = components['schemas']['Job']
 ```
 
 **When to regenerate:**
+
 - After updating Transcription Palantir API
 - When TypeScript compilation errors indicate type mismatches
 - Before deploying changes
