@@ -1,87 +1,126 @@
-import axios from 'axios'
-import type { JobsResponse, TranscriptionJob } from '../data/types'
+import { apiClient } from '@/lib/apiClient';
+import type { JobsResponse, TranscriptionJob } from '../data/types';
 
 /**
  * Transcription API Client
  *
- * Interfaces with the Unified API (mithrandir-unified-api) on port 8080.
- * The Unified API acts as an API Gateway/BFF (Backend for Frontend) that
- * proxies requests to the transcription-palantir backend service (port 9003).
+ * ⚠️  CRITICAL: Endpoints are /transcription/*, NOT /api/transcription/*
  *
- * Architecture:
- * Frontend → Unified API (8080) → Transcription Palantir (9003)
+ * This client interfaces with the Mithrandir Unified API (port 8080) which acts
+ * as an API Gateway/BFF (Backend for Frontend) and proxies requests to the
+ * transcription-palantir backend service (port 9003).
  *
- * @requires VITE_TRANSCRIPTION_API - Environment variable for the Unified API transcription endpoint
+ * 📚 API Documentation Sources:
+ * - Live endpoint list: http://100.77.230.53:8080/info
+ * - GitHub README: https://github.com/nbost130/mithrandir-unified-api#api-endpoints
+ * - Server location: http://100.77.230.53:8080
+ *
+ * Always check the /info endpoint for the current canonical list of available
+ * endpoints and their exact paths. The Unified API uses /transcription/* paths
+ * (without the /api prefix) for all transcription-related operations.
+ *
+ * Uses the centralized apiClient which handles:
+ * - Authorization header injection
+ * - Base URL configuration
+ * - Global error handling
  */
 
-// Validate required environment variable - NO hardcoded fallbacks!
-if (!import.meta.env.VITE_TRANSCRIPTION_API) {
-  throw new Error(
-    'VITE_TRANSCRIPTION_API environment variable is not set. ' +
-      'This should point to the Unified API transcription endpoint ' +
-      '(e.g., http://100.77.230.53:8080/transcription)'
-  )
-}
-
-const API_BASE = import.meta.env.VITE_TRANSCRIPTION_API
-
 export const transcriptionApi = {
-  // Fetch jobs by status
+  /**
+   * Fetch transcription jobs with optional filtering
+   *
+   * Endpoint: GET /transcription/jobs?status=X&limit=N
+   *
+   * @param status - Optional filter by job status (pending, processing, completed, failed)
+   * @param limit - Maximum number of jobs to return (default: 100)
+   * @returns Array of transcription jobs
+   */
   async getJobs(status?: string, limit = 100): Promise<TranscriptionJob[]> {
-    const params = new URLSearchParams()
-    if (status) params.append('status', status)
-    params.append('limit', limit.toString())
+    const params = new URLSearchParams();
+    if (status) params.append('status', status);
+    params.append('limit', limit.toString());
 
-    const response = await axios.get<JobsResponse>(
-      `${API_BASE}/jobs?${params.toString()}`
-    )
-    return response.data.data
+    const response = await apiClient.get<JobsResponse>(`/transcription/jobs?${params.toString()}`);
+    return response.data.data;
   },
 
-  // Fetch all jobs
+  /**
+   * Fetch all transcription jobs (no status filter)
+   *
+   * Endpoint: GET /transcription/jobs
+   *
+   * This makes a single API call to fetch all jobs. More efficient than
+   * making multiple parallel requests for each status type.
+   *
+   * @returns Array of all transcription jobs
+   */
   async getAllJobs(): Promise<TranscriptionJob[]> {
-    const [pending, processing, completed, failed] = await Promise.all([
-      this.getJobs('pending'),
-      this.getJobs('processing'),
-      this.getJobs('completed'),
-      this.getJobs('failed'),
-    ])
-    return [...pending, ...processing, ...completed, ...failed]
+    return this.getJobs();
   },
 
-  // Retry a failed job
+  /**
+   * Retry a failed transcription job
+   *
+   * Endpoint: POST /transcription/jobs/:id/retry
+   *
+   * @param jobId - ID of the job to retry
+   */
   async retryJob(jobId: string): Promise<void> {
-    await axios.post(`${API_BASE}/jobs/${jobId}/retry`)
+    await apiClient.post(`/transcription/jobs/${jobId}/retry`);
   },
 
-  // Delete a job
+  /**
+   * Delete a transcription job
+   *
+   * Endpoint: DELETE /transcription/jobs/:id
+   *
+   * @param jobId - ID of the job to delete
+   */
   async deleteJob(jobId: string): Promise<void> {
-    await axios.delete(`${API_BASE}/jobs/${jobId}`)
+    await apiClient.delete(`/transcription/jobs/${jobId}`);
   },
 
-  // Update job priority
+  /**
+   * Update job priority (partial update)
+   *
+   * Endpoint: PATCH /transcription/jobs/:id
+   *
+   * @param jobId - ID of the job to update
+   * @param priority - New priority value
+   */
   async updateJobPriority(jobId: string, priority: number): Promise<void> {
-    await axios.patch(`${API_BASE}/jobs/${jobId}`, { priority })
+    await apiClient.patch(`/transcription/jobs/${jobId}`, { priority });
   },
 
-  // Get job details
+  /**
+   * Get detailed information about a specific job
+   *
+   * Endpoint: GET /transcription/jobs/:id
+   *
+   * @param jobId - ID of the job to retrieve
+   * @returns Detailed job information
+   */
   async getJob(jobId: string): Promise<TranscriptionJob> {
-    const response = await axios.get<{
-      success: boolean
-      data: TranscriptionJob
-    }>(`${API_BASE}/jobs/${jobId}`)
-    return response.data.data
+    const response = await apiClient.get<{
+      success: boolean;
+      data: TranscriptionJob;
+    }>(`/transcription/jobs/${jobId}`);
+    return response.data.data;
   },
 
-  // Health check
+  /**
+   * Check transcription service health status
+   *
+   * Endpoint: GET /transcription/health
+   *
+   * @returns true if service is healthy, false otherwise
+   */
   async healthCheck(): Promise<boolean> {
     try {
-      const response = await axios.get(
-        `${API_BASE.replace('/api/v1', '')}/api/v1/health`
-      )
-      return response.data.status === 'healthy'
+      const response = await apiClient.get('/transcription/health');
+      return response.data.status === 'healthy';
     } catch {
-      return false
+      return false;
     }
   },
-}
+};
