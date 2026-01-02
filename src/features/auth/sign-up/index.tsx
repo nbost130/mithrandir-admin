@@ -1,7 +1,7 @@
-import { Link } from '@tanstack/react-router';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { AuthLayout } from '../auth-layout';
-import { SignUpForm } from './components/sign-up-form';
+import { Link } from '@tanstack/react-router'
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
+import { AuthLayout } from '../auth-layout'
+import { SignUpForm } from './components/sign-up-form'
 
 export function SignUp() {
   return (
@@ -35,5 +35,5 @@ export function SignUp() {
         </CardFooter>
       </Card>
     </AuthLayout>
-  );
+  )
 }

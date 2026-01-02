@@ -1,25 +1,25 @@
-import { ChevronLeftIcon, ChevronRightIcon, DoubleArrowLeftIcon, DoubleArrowRightIcon } from '@radix-ui/react-icons';
-import type { Table } from '@tanstack/react-table';
-import { Button } from '@/components/ui/button';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { cn, getPageNumbers } from '@/lib/utils';
+import { ChevronLeftIcon, ChevronRightIcon, DoubleArrowLeftIcon, DoubleArrowRightIcon } from '@radix-ui/react-icons'
+import type { Table } from '@tanstack/react-table'
+import { Button } from '@/components/ui/button'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import { cn, getPageNumbers } from '@/lib/utils'
 
 type DataTablePaginationProps<TData> = {
-  table: Table<TData>;
-  className?: string;
-};
+  table: Table<TData>
+  className?: string
+}
 
 export function DataTablePagination<TData>({ table, className }: DataTablePaginationProps<TData>) {
-  const currentPage = table.getState().pagination.pageIndex + 1;
-  const totalPages = table.getPageCount();
-  const pageNumbers = getPageNumbers(currentPage, totalPages);
+  const currentPage = table.getState().pagination.pageIndex + 1
+  const totalPages = table.getPageCount()
+  const pageNumbers = getPageNumbers(currentPage, totalPages)
 
   return (
     <div
       className={cn(
         'flex items-center justify-between overflow-clip px-2',
         '@max-2xl/content:flex-col-reverse @max-2xl/content:gap-4',
-        className
+        className,
       )}
       style={{ overflowClipMargin: 1 }}
     >
@@ -31,7 +31,7 @@ export function DataTablePagination<TData>({ table, className }: DataTablePagina
           <Select
             value={`${table.getState().pagination.pageSize}`}
             onValueChange={(value) => {
-              table.setPageSize(Number(value));
+              table.setPageSize(Number(value))
             }}
           >
             <SelectTrigger className="h-8 w-[70px]">
@@ -112,5 +112,5 @@ export function DataTablePagination<TData>({ table, className }: DataTablePagina
         </div>
       </div>
     </div>
-  );
+  )
 }

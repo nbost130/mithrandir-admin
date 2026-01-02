@@ -1,12 +1,12 @@
-import { type ClassValue, clsx } from 'clsx';
-import { twMerge } from 'tailwind-merge';
+import { type ClassValue, clsx } from 'clsx'
+import { twMerge } from 'tailwind-merge'
 
 export function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs));
+  return twMerge(clsx(inputs))
 }
 
 export function sleep(ms: number = 1000) {
-  return new Promise((resolve) => setTimeout(resolve, ms));
+  return new Promise((resolve) => setTimeout(resolve, ms))
 }
 
 /**
@@ -21,40 +21,24 @@ export function sleep(ms: number = 1000) {
  * - In middle: [1, '...', 4, 5, 6, '...', 10]
  * - Near end: [1, '...', 7, 8, 9, 10]
  */
-export function getPageNumbers(currentPage: number, totalPages: number) {
-  const maxVisiblePages = 5; // Maximum number of page buttons to show
-  const rangeWithDots = [];
+export function getPageNumbers(currentPage: number, totalPages: number): (number | string)[] {
+  const maxVisible = 5
 
-  if (totalPages <= maxVisiblePages) {
-    // If total pages is 5 or less, show all pages
-    for (let i = 1; i <= totalPages; i++) {
-      rangeWithDots.push(i);
-    }
-  } else {
-    // Always show first page
-    rangeWithDots.push(1);
-
-    if (currentPage <= 3) {
-      // Near the beginning: [1] [2] [3] [4] ... [10]
-      for (let i = 2; i <= 4; i++) {
-        rangeWithDots.push(i);
-      }
-      rangeWithDots.push('...', totalPages);
-    } else if (currentPage >= totalPages - 2) {
-      // Near the end: [1] ... [7] [8] [9] [10]
-      rangeWithDots.push('...');
-      for (let i = totalPages - 3; i <= totalPages; i++) {
-        rangeWithDots.push(i);
-      }
-    } else {
-      // In the middle: [1] ... [4] [5] [6] ... [10]
-      rangeWithDots.push('...');
-      for (let i = currentPage - 1; i <= currentPage + 1; i++) {
-        rangeWithDots.push(i);
-      }
-      rangeWithDots.push('...', totalPages);
-    }
+  // Small dataset - show all pages
+  if (totalPages <= maxVisible) {
+    return Array.from({ length: totalPages }, (_, i) => i + 1)
   }
 
-  return rangeWithDots;
+  // Near beginning
+  if (currentPage <= 3) {
+    return [1, 2, 3, 4, '...', totalPages]
+  }
+
+  // Near end
+  if (currentPage >= totalPages - 2) {
+    return [1, '...', totalPages - 3, totalPages - 2, totalPages - 1, totalPages]
+  }
+
+  // Middle
+  return [1, '...', currentPage - 1, currentPage, currentPage + 1, '...', totalPages]
 }

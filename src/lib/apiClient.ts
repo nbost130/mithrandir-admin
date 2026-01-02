@@ -1,9 +1,9 @@
-import axios from 'axios';
+import axios from 'axios'
 
 // Validate API base URL is configured
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL
 if (!API_BASE_URL) {
-  throw new Error('VITE_API_BASE_URL environment variable is not set. Please check your .env file.');
+  throw new Error('VITE_API_BASE_URL environment variable is not set. Please check your .env file.')
 }
 
 /**
@@ -32,4 +32,4 @@ if (!API_BASE_URL) {
 export const apiClient = axios.create({
   baseURL: API_BASE_URL,
   timeout: 10000, // 10 second timeout
-});
+})

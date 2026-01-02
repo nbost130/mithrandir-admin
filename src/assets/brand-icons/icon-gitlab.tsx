@@ -1,5 +1,5 @@
-import type { SVGProps } from 'react';
-import { cn } from '@/lib/utils';
+import type { SVGProps } from 'react'
+import { cn } from '@/lib/utils'
 
 export function IconGitlab({ className, ...props }: SVGProps<SVGSVGElement>) {
   return (
@@ -21,5 +21,5 @@ export function IconGitlab({ className, ...props }: SVGProps<SVGSVGElement>) {
       <path strokeWidth="0" d="M0 0h24v24H0z" fill="none" />
       <path d="M21 14l-9 7l-9 -7l3 -11l3 7h6l3 -7z" />
     </svg>
-  );
+  )
 }

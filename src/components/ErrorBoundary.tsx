@@ -1,35 +1,35 @@
-import { Component, type ErrorInfo, type ReactNode } from 'react';
-import { toast } from 'sonner';
-import { logError } from '@/lib/errorTracking';
+import { Component, type ErrorInfo, type ReactNode } from 'react'
+import { toast } from 'sonner'
+import { logError } from '@/lib/errorTracking'
 
 interface Props {
-  children: ReactNode;
+  children: ReactNode
 }
 
 interface State {
-  hasError: boolean;
-  error: Error | null;
+  hasError: boolean
+  error: Error | null
 }
 
 class ErrorBoundary extends Component<Props, State> {
   constructor(props: Props) {
-    super(props);
-    this.state = { hasError: false, error: null };
+    super(props)
+    this.state = { hasError: false, error: null }
   }
 
   static getDerivedStateFromError(error: Error): State {
     // Update state so the next render will show the fallback UI.
-    return { hasError: true, error };
+    return { hasError: true, error }
   }
 
   componentDidCatch(error: Error, errorInfo: ErrorInfo) {
-    logError(error, { componentStack: errorInfo.componentStack });
-    toast.error('A critical error occurred. The team has been notified.');
+    logError(error, { componentStack: errorInfo.componentStack })
+    toast.error('A critical error occurred. The team has been notified.')
   }
 
   handleRetry = () => {
-    this.setState({ hasError: false, error: null });
-  };
+    this.setState({ hasError: false, error: null })
+  }
 
   render() {
     if (this.state.hasError) {
@@ -54,11 +54,11 @@ class ErrorBoundary extends Component<Props, State> {
             </button>
           </div>
         </div>
-      );
+      )
     }
 
-    return this.props.children;
+    return this.props.children
   }
 }
 
-export default ErrorBoundary;
+export default ErrorBoundary

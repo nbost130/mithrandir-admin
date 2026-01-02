@@ -1,5 +1,5 @@
-import type { SVGProps } from 'react';
-import { cn } from '@/lib/utils';
+import type { SVGProps } from 'react'
+import { cn } from '@/lib/utils'
 
 export function IconThemeSystem({ className, ...props }: SVGProps<SVGSVGElement>) {
   return (
@@ -10,7 +10,7 @@ export function IconThemeSystem({ className, ...props }: SVGProps<SVGSVGElement>
       className={cn(
         'overflow-hidden rounded-[6px]',
         'stroke-primary fill-primary group-data-[state=unchecked]:stroke-muted-foreground group-data-[state=unchecked]:fill-muted-foreground',
-        className
+        className,
       )}
       {...props}
     >
@@ -70,5 +70,5 @@ export function IconThemeSystem({ className, ...props }: SVGProps<SVGSVGElement>
         strokeMiterlimit={10}
       />
     </svg>
-  );
+  )
 }

@@ -1,5 +1,5 @@
-import type { SVGProps } from 'react';
-import { cn } from '@/lib/utils';
+import type { SVGProps } from 'react'
+import { cn } from '@/lib/utils'
 
 export function ClerkLogo({ className, ...props }: SVGProps<SVGSVGElement>) {
   return (
@@ -19,5 +19,5 @@ export function ClerkLogo({ className, ...props }: SVGProps<SVGSVGElement>) {
         strokeWidth="1"
       ></path>
     </svg>
-  );
+  )
 }

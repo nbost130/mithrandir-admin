@@ -1,14 +1,14 @@
-import { format } from 'date-fns';
-import { Calendar as CalendarIcon } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Calendar } from '@/components/ui/calendar';
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { format } from 'date-fns'
+import { Calendar as CalendarIcon } from 'lucide-react'
+import { Button } from '@/components/ui/button'
+import { Calendar } from '@/components/ui/calendar'
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
 
 type DatePickerProps = {
-  selected: Date | undefined;
-  onSelect: (date: Date | undefined) => void;
-  placeholder?: string;
-};
+  selected: Date | undefined
+  onSelect: (date: Date | undefined) => void
+  placeholder?: string
+}
 
 export function DatePicker({ selected, onSelect, placeholder = 'Pick a date' }: DatePickerProps) {
   return (
@@ -33,5 +33,5 @@ export function DatePicker({ selected, onSelect, placeholder = 'Pick a date' }: 
         />
       </PopoverContent>
     </Popover>
-  );
+  )
 }

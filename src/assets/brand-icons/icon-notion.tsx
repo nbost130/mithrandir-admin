@@ -1,5 +1,5 @@
-import type { SVGProps } from 'react';
-import { cn } from '@/lib/utils';
+import type { SVGProps } from 'react'
+import { cn } from '@/lib/utils'
 
 export function IconNotion({ className, ...props }: SVGProps<SVGSVGElement>) {
   return (
@@ -24,5 +24,5 @@ export function IconNotion({ className, ...props }: SVGProps<SVGSVGElement>) {
       <path d="M4.5 5.5l2.5 2.5" />
       <path d="M20 7l-13 1v12.5" />
     </svg>
-  );
+  )
 }

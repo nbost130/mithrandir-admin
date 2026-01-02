@@ -1,7 +1,7 @@
-import { Link } from '@tanstack/react-router';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { AuthLayout } from '../auth-layout';
-import { OtpForm } from './components/otp-form';
+import { Link } from '@tanstack/react-router'
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
+import { AuthLayout } from '../auth-layout'
+import { OtpForm } from './components/otp-form'
 
 export function Otp() {
   return (
@@ -27,5 +27,5 @@ export function Otp() {
         </CardFooter>
       </Card>
     </AuthLayout>
-  );
+  )
 }

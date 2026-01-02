@@ -1,4 +1,4 @@
-import { Telescope } from 'lucide-react';
+import { Telescope } from 'lucide-react'
 
 export function ComingSoon() {
   return (
@@ -12,5 +12,5 @@ export function ComingSoon() {
         </p>
       </div>
     </div>
-  );
+  )
 }

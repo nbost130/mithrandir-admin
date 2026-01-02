@@ -1,14 +1,14 @@
-import { useNavigate, useRouter } from '@tanstack/react-router';
-import { Button } from '@/components/ui/button';
-import { cn } from '@/lib/utils';
+import { useNavigate, useRouter } from '@tanstack/react-router'
+import { Button } from '@/components/ui/button'
+import { cn } from '@/lib/utils'
 
 type GeneralErrorProps = React.HTMLAttributes<HTMLDivElement> & {
-  minimal?: boolean;
-};
+  minimal?: boolean
+}
 
 export function GeneralError({ className, minimal = false }: GeneralErrorProps) {
-  const navigate = useNavigate();
-  const { history } = useRouter();
+  const navigate = useNavigate()
+  const { history } = useRouter()
   return (
     <div className={cn('h-svh w-full', className)}>
       <div className="m-auto flex h-full w-full flex-col items-center justify-center gap-2">
@@ -27,5 +27,5 @@ export function GeneralError({ className, minimal = false }: GeneralErrorProps) 
         )}
       </div>
     </div>
-  );
+  )
 }

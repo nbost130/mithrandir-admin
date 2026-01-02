@@ -1,15 +1,15 @@
-import { zodResolver } from '@hookform/resolvers/zod';
-import { CaretSortIcon, CheckIcon } from '@radix-ui/react-icons';
-import { useForm } from 'react-hook-form';
-import { z } from 'zod';
-import { DatePicker } from '@/components/date-picker';
-import { Button } from '@/components/ui/button';
-import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@/components/ui/command';
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import { showSubmittedData } from '@/lib/show-submitted-data';
-import { cn } from '@/lib/utils';
+import { zodResolver } from '@hookform/resolvers/zod'
+import { CaretSortIcon, CheckIcon } from '@radix-ui/react-icons'
+import { useForm } from 'react-hook-form'
+import { z } from 'zod'
+import { DatePicker } from '@/components/date-picker'
+import { Button } from '@/components/ui/button'
+import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@/components/ui/command'
+import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
+import { Input } from '@/components/ui/input'
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
+import { showSubmittedData } from '@/lib/show-submitted-data'
+import { cn } from '@/lib/utils'
 
 const languages = [
   { label: 'English', value: 'en' },
@@ -21,7 +21,7 @@ const languages = [
   { label: 'Japanese', value: 'ja' },
   { label: 'Korean', value: 'ko' },
   { label: 'Chinese', value: 'zh' },
-] as const;
+] as const
 
 const accountFormSchema = z.object({
   name: z
@@ -31,23 +31,23 @@ const accountFormSchema = z.object({
     .max(30, 'Name must not be longer than 30 characters.'),
   dob: z.date('Please select your date of birth.'),
   language: z.string('Please select a language.'),
-});
+})
 
-type AccountFormValues = z.infer<typeof accountFormSchema>;
+type AccountFormValues = z.infer<typeof accountFormSchema>
 
 // This can come from your database or API.
 const defaultValues: Partial<AccountFormValues> = {
   name: '',
-};
+}
 
 export function AccountForm() {
   const form = useForm<AccountFormValues>({
     resolver: zodResolver(accountFormSchema),
     defaultValues,
-  });
+  })
 
   function onSubmit(data: AccountFormValues) {
-    showSubmittedData(data);
+    showSubmittedData(data)
   }
 
   return (
@@ -111,7 +111,7 @@ export function AccountForm() {
                             value={language.label}
                             key={language.value}
                             onSelect={() => {
-                              form.setValue('language', language.value);
+                              form.setValue('language', language.value)
                             }}
                           >
                             <CheckIcon
@@ -133,5 +133,5 @@ export function AccountForm() {
         <Button type="submit">Update account</Button>
       </form>
     </Form>
-  );
+  )
 }

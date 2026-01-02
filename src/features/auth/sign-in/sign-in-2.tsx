@@ -1,8 +1,8 @@
-import { Logo } from '@/assets/logo';
-import { cn } from '@/lib/utils';
-import dashboardDark from './assets/dashboard-dark.png';
-import dashboardLight from './assets/dashboard-light.png';
-import { UserAuthForm } from './components/user-auth-form';
+import { Logo } from '@/assets/logo'
+import { cn } from '@/lib/utils'
+import dashboardDark from './assets/dashboard-dark.png'
+import dashboardLight from './assets/dashboard-light.png'
+import { UserAuthForm } from './components/user-auth-form'
 
 export function SignIn2() {
   return (
@@ -40,12 +40,12 @@ export function SignIn2() {
       <div
         className={cn(
           'bg-muted relative h-full overflow-hidden max-lg:hidden',
-          '[&>img]:absolute [&>img]:top-[15%] [&>img]:left-20 [&>img]:h-full [&>img]:w-full [&>img]:object-cover [&>img]:object-top-left [&>img]:select-none'
+          '[&>img]:absolute [&>img]:top-[15%] [&>img]:left-20 [&>img]:h-full [&>img]:w-full [&>img]:object-cover [&>img]:object-top-left [&>img]:select-none',
         )}
       >
         <img src={dashboardLight} className="dark:hidden" width={1024} height={1151} alt="Shadcn-Admin" />
         <img src={dashboardDark} className="hidden dark:block" width={1024} height={1138} alt="Shadcn-Admin" />
       </div>
     </div>
-  );
+  )
 }

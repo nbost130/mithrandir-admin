@@ -1,13 +1,13 @@
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { z } from 'zod';
-import { IconFacebook, IconGithub } from '@/assets/brand-icons';
-import { PasswordInput } from '@/components/password-input';
-import { Button } from '@/components/ui/button';
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
-import { cn } from '@/lib/utils';
+import { zodResolver } from '@hookform/resolvers/zod'
+import { useState } from 'react'
+import { useForm } from 'react-hook-form'
+import { z } from 'zod'
+import { IconFacebook, IconGithub } from '@/assets/brand-icons'
+import { PasswordInput } from '@/components/password-input'
+import { Button } from '@/components/ui/button'
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
+import { Input } from '@/components/ui/input'
+import { cn } from '@/lib/utils'
 
 const formSchema = z
   .object({
@@ -20,10 +20,10 @@ const formSchema = z
   .refine((data) => data.password === data.confirmPassword, {
     message: "Passwords don't match.",
     path: ['confirmPassword'],
-  });
+  })
 
 export function SignUpForm({ className, ...props }: React.HTMLAttributes<HTMLFormElement>) {
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false)
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -32,16 +32,16 @@ export function SignUpForm({ className, ...props }: React.HTMLAttributes<HTMLFor
       password: '',
       confirmPassword: '',
     },
-  });
+  })
 
   function onSubmit(data: z.infer<typeof formSchema>) {
-    setIsLoading(true);
+    setIsLoading(true)
     // eslint-disable-next-line no-console
-    console.log(data);
+    console.log(data)
 
     setTimeout(() => {
-      setIsLoading(false);
-    }, 3000);
+      setIsLoading(false)
+    }, 3000)
   }
 
   return (
@@ -109,5 +109,5 @@ export function SignUpForm({ className, ...props }: React.HTMLAttributes<HTMLFor
         </div>
       </form>
     </Form>
-  );
+  )
 }

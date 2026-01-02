@@ -1,4 +1,4 @@
-import type { SVGProps } from 'react';
+import type { SVGProps } from 'react'
 
 export function IconSidebarFloating(props: SVGProps<SVGSVGElement>) {
   return (
@@ -53,5 +53,5 @@ export function IconSidebarFloating(props: SVGProps<SVGSVGElement>) {
         strokeMiterlimit={10}
       />
     </svg>
-  );
+  )
 }

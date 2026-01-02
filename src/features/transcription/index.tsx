@@ -1,4 +1,4 @@
-import { TranscriptionTable } from './components/transcription-table';
+import { TranscriptionTable } from './components/transcription-table'
 
 export function Transcription() {
   return (
@@ -9,5 +9,5 @@ export function Transcription() {
       </div>
       <TranscriptionTable />
     </div>
-  );
+  )
 }

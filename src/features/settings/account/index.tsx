@@ -1,5 +1,5 @@
-import { ContentSection } from '../components/content-section';
-import { AccountForm } from './account-form';
+import { ContentSection } from '../components/content-section'
+import { AccountForm } from './account-form'
 
 export function SettingsAccount() {
   return (
@@ -10,5 +10,5 @@ export function SettingsAccount() {
     >
       <AccountForm />
     </ContentSection>
-  );
+  )
 }

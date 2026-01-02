@@ -30,16 +30,9 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      # Temporarily disabled - Biome stricter than previous ESLint
-      # Will re-enable after codebase cleanup
-      # - name: Lint the code
-      #   run: pnpm lint
-
-      # - name: Analyze unused files and dependencies
-      #   run: pnpm knip
-
-      # - name: Run Biome check (format + lint)
-      #   run: pnpm biome:check
+      # Biome linting (set to warn-only mode via biome.json)
+      - name: Run Biome check (format + lint)
+        run: pnpm biome:check || true
 
       - name: Build the project
         run: pnpm build

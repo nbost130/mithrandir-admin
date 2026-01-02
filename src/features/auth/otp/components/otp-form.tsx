@@ -1,40 +1,40 @@
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useNavigate } from '@tanstack/react-router';
-import { useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { z } from 'zod';
-import { Button } from '@/components/ui/button';
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
-import { InputOTP, InputOTPGroup, InputOTPSeparator, InputOTPSlot } from '@/components/ui/input-otp';
-import { showSubmittedData } from '@/lib/show-submitted-data';
-import { cn } from '@/lib/utils';
+import { zodResolver } from '@hookform/resolvers/zod'
+import { useNavigate } from '@tanstack/react-router'
+import { useState } from 'react'
+import { useForm } from 'react-hook-form'
+import { z } from 'zod'
+import { Button } from '@/components/ui/button'
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
+import { InputOTP, InputOTPGroup, InputOTPSeparator, InputOTPSlot } from '@/components/ui/input-otp'
+import { showSubmittedData } from '@/lib/show-submitted-data'
+import { cn } from '@/lib/utils'
 
 const formSchema = z.object({
   otp: z.string().min(6, 'Please enter the 6-digit code.').max(6, 'Please enter the 6-digit code.'),
-});
+})
 
-type OtpFormProps = React.HTMLAttributes<HTMLFormElement>;
+type OtpFormProps = React.HTMLAttributes<HTMLFormElement>
 
 export function OtpForm({ className, ...props }: OtpFormProps) {
-  const navigate = useNavigate();
-  const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate()
+  const [isLoading, setIsLoading] = useState(false)
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: { otp: '' },
-  });
+  })
 
   // eslint-disable-next-line react-hooks/incompatible-library
-  const otp = form.watch('otp');
+  const otp = form.watch('otp')
 
   function onSubmit(data: z.infer<typeof formSchema>) {
-    setIsLoading(true);
-    showSubmittedData(data);
+    setIsLoading(true)
+    showSubmittedData(data)
 
     setTimeout(() => {
-      setIsLoading(false);
-      navigate({ to: '/' });
-    }, 1000);
+      setIsLoading(false)
+      navigate({ to: '/' })
+    }, 1000)
   }
 
   return (
@@ -77,5 +77,5 @@ export function OtpForm({ className, ...props }: OtpFormProps) {
         </Button>
       </form>
     </Form>
-  );
+  )
 }

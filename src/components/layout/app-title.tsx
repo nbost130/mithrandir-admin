@@ -1,11 +1,11 @@
-import { Link } from '@tanstack/react-router';
-import { Menu, X } from 'lucide-react';
-import { SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar } from '@/components/ui/sidebar';
-import { cn } from '@/lib/utils';
-import { Button } from '../ui/button';
+import { Link } from '@tanstack/react-router'
+import { Menu, X } from 'lucide-react'
+import { SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar } from '@/components/ui/sidebar'
+import { cn } from '@/lib/utils'
+import { Button } from '../ui/button'
 
 export function AppTitle() {
-  const { setOpenMobile } = useSidebar();
+  const { setOpenMobile } = useSidebar()
   return (
     <SidebarMenu>
       <SidebarMenuItem>
@@ -20,11 +20,11 @@ export function AppTitle() {
         </SidebarMenuButton>
       </SidebarMenuItem>
     </SidebarMenu>
-  );
+  )
 }
 
 function ToggleSidebar({ className, onClick, ...props }: React.ComponentProps<typeof Button>) {
-  const { toggleSidebar } = useSidebar();
+  const { toggleSidebar } = useSidebar()
 
   return (
     <Button
@@ -34,8 +34,8 @@ function ToggleSidebar({ className, onClick, ...props }: React.ComponentProps<ty
       size="icon"
       className={cn('aspect-square size-8 max-md:scale-125', className)}
       onClick={(event) => {
-        onClick?.(event);
-        toggleSidebar();
+        onClick?.(event)
+        toggleSidebar()
       }}
       {...props}
     >
@@ -43,5 +43,5 @@ function ToggleSidebar({ className, onClick, ...props }: React.ComponentProps<ty
       <Menu className="max-md:hidden" />
       <span className="sr-only">Toggle Sidebar</span>
     </Button>
-  );
+  )
 }

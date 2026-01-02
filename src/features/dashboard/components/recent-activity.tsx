@@ -1,15 +1,15 @@
-import { useQuery } from '@tanstack/react-query';
-import { formatDistanceToNow } from 'date-fns';
-import { CheckCircle2, Clock, XCircle } from 'lucide-react';
-import { Avatar, AvatarFallback } from '@/components/ui/avatar';
-import { dashboardApi } from '../api/dashboard-api';
+import { useQuery } from '@tanstack/react-query'
+import { formatDistanceToNow } from 'date-fns'
+import { CheckCircle2, Clock, XCircle } from 'lucide-react'
+import { Avatar, AvatarFallback } from '@/components/ui/avatar'
+import { dashboardApi } from '../api/dashboard-api'
 
 export function RecentActivity() {
   const { data: activity = [], isLoading } = useQuery({
     queryKey: ['dashboard-activity'],
     queryFn: () => dashboardApi.getActivity(5),
     refetchInterval: 15000, // Refresh every 15 seconds
-  });
+  })
 
   if (isLoading) {
     return (
@@ -24,11 +24,11 @@ export function RecentActivity() {
           </div>
         ))}
       </div>
-    );
+    )
   }
 
   if (!activity.length) {
-    return <div className="text-muted-foreground flex h-[200px] items-center justify-center">No recent activity</div>;
+    return <div className="text-muted-foreground flex h-[200px] items-center justify-center">No recent activity</div>
   }
 
   return (
@@ -41,14 +41,14 @@ export function RecentActivity() {
             <XCircle className="h-4 w-4 text-red-500" />
           ) : (
             <Clock className="h-4 w-4 text-yellow-500" />
-          );
+          )
 
         const initials = (item.details || 'NA')
           .split(' ')
           .slice(0, 2)
           .map((word) => word[0])
           .join('')
-          .toUpperCase();
+          .toUpperCase()
 
         return (
           <div key={item.id} className="flex items-center gap-4">
@@ -74,8 +74,8 @@ export function RecentActivity() {
               )}
             </div>
           </div>
-        );
+        )
       })}
     </div>
-  );
+  )
 }

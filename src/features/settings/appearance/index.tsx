@@ -1,5 +1,5 @@
-import { ContentSection } from '../components/content-section';
-import { AppearanceForm } from './appearance-form';
+import { ContentSection } from '../components/content-section'
+import { AppearanceForm } from './appearance-form'
 
 export function SettingsAppearance() {
   return (
@@ -10,5 +10,5 @@ export function SettingsAppearance() {
     >
       <AppearanceForm />
     </ContentSection>
-  );
+  )
 }

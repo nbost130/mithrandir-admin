@@ -1,33 +1,33 @@
-import { zodResolver } from '@hookform/resolvers/zod';
-import { Link, useNavigate } from '@tanstack/react-router';
-import { Loader2, LogIn } from 'lucide-react';
-import { useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { toast } from 'sonner';
-import { z } from 'zod';
-import { IconFacebook, IconGithub } from '@/assets/brand-icons';
-import { PasswordInput } from '@/components/password-input';
-import { Button } from '@/components/ui/button';
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
-import { cn, sleep } from '@/lib/utils';
-import { useAuthStore } from '@/stores/auth-store';
+import { zodResolver } from '@hookform/resolvers/zod'
+import { Link, useNavigate } from '@tanstack/react-router'
+import { Loader2, LogIn } from 'lucide-react'
+import { useState } from 'react'
+import { useForm } from 'react-hook-form'
+import { toast } from 'sonner'
+import { z } from 'zod'
+import { IconFacebook, IconGithub } from '@/assets/brand-icons'
+import { PasswordInput } from '@/components/password-input'
+import { Button } from '@/components/ui/button'
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
+import { Input } from '@/components/ui/input'
+import { cn, sleep } from '@/lib/utils'
+import { useAuthStore } from '@/stores/auth-store'
 
 const formSchema = z.object({
   email: z.email({
     error: (iss) => (iss.input === '' ? 'Please enter your email' : undefined),
   }),
   password: z.string().min(1, 'Please enter your password').min(7, 'Password must be at least 7 characters long'),
-});
+})
 
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLFormElement> {
-  redirectTo?: string;
+  redirectTo?: string
 }
 
 export function UserAuthForm({ className, redirectTo, ...props }: UserAuthFormProps) {
-  const [isLoading, setIsLoading] = useState(false);
-  const navigate = useNavigate();
-  const { auth } = useAuthStore();
+  const [isLoading, setIsLoading] = useState(false)
+  const navigate = useNavigate()
+  const { auth } = useAuthStore()
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -35,15 +35,15 @@ export function UserAuthForm({ className, redirectTo, ...props }: UserAuthFormPr
       email: '',
       password: '',
     },
-  });
+  })
 
   function onSubmit(data: z.infer<typeof formSchema>) {
-    setIsLoading(true);
+    setIsLoading(true)
 
     toast.promise(sleep(2000), {
       loading: 'Signing in...',
       success: () => {
-        setIsLoading(false);
+        setIsLoading(false)
 
         // Mock successful authentication with expiry computed at success time
         const mockUser = {
@@ -51,20 +51,20 @@ export function UserAuthForm({ className, redirectTo, ...props }: UserAuthFormPr
           email: data.email,
           role: ['user'],
           exp: Date.now() + 24 * 60 * 60 * 1000, // 24 hours from now
-        };
+        }
 
         // Set user and access token
-        auth.setUser(mockUser);
-        auth.setAccessToken('mock-access-token');
+        auth.setUser(mockUser)
+        auth.setAccessToken('mock-access-token')
 
         // Redirect to the stored location or default to dashboard
-        const targetPath = redirectTo || '/';
-        navigate({ to: targetPath, replace: true });
+        const targetPath = redirectTo || '/'
+        navigate({ to: targetPath, replace: true })
 
-        return `Welcome back, ${data.email}!`;
+        return `Welcome back, ${data.email}!`
       },
       error: 'Error',
-    });
+    })
   }
 
   return (
@@ -126,5 +126,5 @@ export function UserAuthForm({ className, redirectTo, ...props }: UserAuthFormPr
         </div>
       </form>
     </Form>
-  );
+  )
 }

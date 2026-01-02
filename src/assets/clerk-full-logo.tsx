@@ -1,4 +1,4 @@
-import type { SVGProps } from 'react';
+import type { SVGProps } from 'react'
 
 export function ClerkFullLogo(props: SVGProps<SVGSVGElement>) {
   return (
@@ -30,5 +30,5 @@ export function ClerkFullLogo(props: SVGProps<SVGSVGElement>) {
         </linearGradient>
       </defs>
     </svg>
-  );
+  )
 }

@@ -1,13 +1,13 @@
-import { Outlet } from '@tanstack/react-router';
-import { Bell, Monitor, Palette, UserCog, Wrench } from 'lucide-react';
-import { ConfigDrawer } from '@/components/config-drawer';
-import { Header } from '@/components/layout/header';
-import { Main } from '@/components/layout/main';
-import { ProfileDropdown } from '@/components/profile-dropdown';
-import { Search } from '@/components/search';
-import { ThemeSwitch } from '@/components/theme-switch';
-import { Separator } from '@/components/ui/separator';
-import { SidebarNav } from './components/sidebar-nav';
+import { Outlet } from '@tanstack/react-router'
+import { Bell, Monitor, Palette, UserCog, Wrench } from 'lucide-react'
+import { ConfigDrawer } from '@/components/config-drawer'
+import { Header } from '@/components/layout/header'
+import { Main } from '@/components/layout/main'
+import { ProfileDropdown } from '@/components/profile-dropdown'
+import { Search } from '@/components/search'
+import { ThemeSwitch } from '@/components/theme-switch'
+import { Separator } from '@/components/ui/separator'
+import { SidebarNav } from './components/sidebar-nav'
 
 const sidebarNavItems = [
   {
@@ -35,7 +35,7 @@ const sidebarNavItems = [
     href: '/settings/display',
     icon: <Monitor size={18} />,
   },
-];
+]
 
 export function Settings() {
   return (
@@ -66,5 +66,5 @@ export function Settings() {
         </div>
       </Main>
     </>
-  );
+  )
 }

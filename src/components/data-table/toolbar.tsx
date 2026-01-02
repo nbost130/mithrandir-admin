@@ -1,24 +1,24 @@
-import { Cross2Icon } from '@radix-ui/react-icons';
-import type { Table } from '@tanstack/react-table';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { DataTableFacetedFilter } from './faceted-filter';
-import { DataTableViewOptions } from './view-options';
+import { Cross2Icon } from '@radix-ui/react-icons'
+import type { Table } from '@tanstack/react-table'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { DataTableFacetedFilter } from './faceted-filter'
+import { DataTableViewOptions } from './view-options'
 
 type DataTableToolbarProps<TData> = {
-  table: Table<TData>;
-  searchPlaceholder?: string;
-  searchKey?: string;
+  table: Table<TData>
+  searchPlaceholder?: string
+  searchKey?: string
   filters?: {
-    columnId: string;
-    title: string;
+    columnId: string
+    title: string
     options: {
-      label: string;
-      value: string;
-      icon?: React.ComponentType<{ className?: string }>;
-    }[];
-  }[];
-};
+      label: string
+      value: string
+      icon?: React.ComponentType<{ className?: string }>
+    }[]
+  }[]
+}
 
 export function DataTableToolbar<TData>({
   table,
@@ -26,7 +26,7 @@ export function DataTableToolbar<TData>({
   searchKey,
   filters = [],
 }: DataTableToolbarProps<TData>) {
-  const isFiltered = table.getState().columnFilters.length > 0 || table.getState().globalFilter;
+  const isFiltered = table.getState().columnFilters.length > 0 || table.getState().globalFilter
 
   return (
     <div className="flex items-center justify-between">
@@ -48,8 +48,8 @@ export function DataTableToolbar<TData>({
         )}
         <div className="flex gap-x-2">
           {filters.map((filter) => {
-            const column = table.getColumn(filter.columnId);
-            if (!column) return null;
+            const column = table.getColumn(filter.columnId)
+            if (!column) return null
             return (
               <DataTableFacetedFilter
                 key={filter.columnId}
@@ -57,15 +57,15 @@ export function DataTableToolbar<TData>({
                 title={filter.title}
                 options={filter.options}
               />
-            );
+            )
           })}
         </div>
         {isFiltered && (
           <Button
             variant="ghost"
             onClick={() => {
-              table.resetColumnFilters();
-              table.setGlobalFilter('');
+              table.resetColumnFilters()
+              table.setGlobalFilter('')
             }}
             className="h-8 px-2 lg:px-3"
           >
@@ -76,5 +76,5 @@ export function DataTableToolbar<TData>({
       </div>
       <DataTableViewOptions table={table} />
     </div>
-  );
+  )
 }

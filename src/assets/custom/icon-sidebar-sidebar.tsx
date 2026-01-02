@@ -1,4 +1,4 @@
-import type { SVGProps } from 'react';
+import type { SVGProps } from 'react'
 
 export function IconSidebarSidebar(props: SVGProps<SVGSVGElement>) {
   return (
@@ -39,5 +39,5 @@ export function IconSidebarSidebar(props: SVGProps<SVGSVGElement>) {
         <path fill="none" opacity={0.6} d="M11.85 8.79L16.91 8.79" />
       </g>
     </svg>
-  );
+  )
 }

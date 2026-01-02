@@ -1,7 +1,7 @@
-import { Link, useLocation } from '@tanstack/react-router';
-import { ChevronRight } from 'lucide-react';
-import type { ReactNode } from 'react';
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
+import { Link, useLocation } from '@tanstack/react-router'
+import { ChevronRight } from 'lucide-react'
+import type { ReactNode } from 'react'
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible'
 import {
   SidebarGroup,
   SidebarGroupLabel,
@@ -12,8 +12,8 @@ import {
   SidebarMenuSubButton,
   SidebarMenuSubItem,
   useSidebar,
-} from '@/components/ui/sidebar';
-import { Badge } from '../ui/badge';
+} from '@/components/ui/sidebar'
+import { Badge } from '../ui/badge'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -21,37 +21,37 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from '../ui/dropdown-menu';
-import type { NavCollapsible, NavGroup as NavGroupProps, NavItem, NavLink } from './types';
+} from '../ui/dropdown-menu'
+import type { NavCollapsible, NavGroup as NavGroupProps, NavItem, NavLink } from './types'
 
 export function NavGroup({ title, items }: NavGroupProps) {
-  const { state, isMobile } = useSidebar();
-  const href = useLocation({ select: (location) => location.href });
+  const { state, isMobile } = useSidebar()
+  const href = useLocation({ select: (location) => location.href })
   return (
     <SidebarGroup>
       <SidebarGroupLabel>{title}</SidebarGroupLabel>
       <SidebarMenu>
         {items.map((item) => {
-          const key = `${item.title}-${item.url}`;
+          const key = `${item.title}-${item.url}`
 
-          if (!item.items) return <SidebarMenuLink key={key} item={item} href={href} />;
+          if (!item.items) return <SidebarMenuLink key={key} item={item} href={href} />
 
           if (state === 'collapsed' && !isMobile)
-            return <SidebarMenuCollapsedDropdown key={key} item={item} href={href} />;
+            return <SidebarMenuCollapsedDropdown key={key} item={item} href={href} />
 
-          return <SidebarMenuCollapsible key={key} item={item} href={href} />;
+          return <SidebarMenuCollapsible key={key} item={item} href={href} />
         })}
       </SidebarMenu>
     </SidebarGroup>
-  );
+  )
 }
 
 function NavBadge({ children }: { children: ReactNode }) {
-  return <Badge className="rounded-full px-1 py-0 text-xs">{children}</Badge>;
+  return <Badge className="rounded-full px-1 py-0 text-xs">{children}</Badge>
 }
 
 function SidebarMenuLink({ item, href }: { item: NavLink; href: string }) {
-  const { setOpenMobile } = useSidebar();
+  const { setOpenMobile } = useSidebar()
   return (
     <SidebarMenuItem>
       <SidebarMenuButton asChild isActive={checkIsActive(href, item)} tooltip={item.title}>
@@ -62,11 +62,11 @@ function SidebarMenuLink({ item, href }: { item: NavLink; href: string }) {
         </Link>
       </SidebarMenuButton>
     </SidebarMenuItem>
-  );
+  )
 }
 
 function SidebarMenuCollapsible({ item, href }: { item: NavCollapsible; href: string }) {
-  const { setOpenMobile } = useSidebar();
+  const { setOpenMobile } = useSidebar()
   return (
     <Collapsible asChild defaultOpen={checkIsActive(href, item, true)} className="group/collapsible">
       <SidebarMenuItem>
@@ -95,7 +95,7 @@ function SidebarMenuCollapsible({ item, href }: { item: NavCollapsible; href: st
         </CollapsibleContent>
       </SidebarMenuItem>
     </Collapsible>
-  );
+  )
 }
 
 function SidebarMenuCollapsedDropdown({ item, href }: { item: NavCollapsible; href: string }) {
@@ -127,7 +127,7 @@ function SidebarMenuCollapsedDropdown({ item, href }: { item: NavCollapsible; hr
         </DropdownMenuContent>
       </DropdownMenu>
     </SidebarMenuItem>
-  );
+  )
 }
 
 function checkIsActive(href: string, item: NavItem, mainNav = false) {
@@ -137,5 +137,5 @@ function checkIsActive(href: string, item: NavItem, mainNav = false) {
     href.split('?')[0] === item.url || // endpoint
     !!item?.items?.filter((i) => i.url === href).length || // if child nav is active
     (mainNav && href.split('/')[1] !== '' && href.split('/')[1] === item?.url?.split('/')[1])
-  );
+  )
 }

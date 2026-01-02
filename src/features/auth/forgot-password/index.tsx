@@ -1,7 +1,7 @@
-import { Link } from '@tanstack/react-router';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { AuthLayout } from '../auth-layout';
-import { ForgotPasswordForm } from './components/forgot-password-form';
+import { Link } from '@tanstack/react-router'
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
+import { AuthLayout } from '../auth-layout'
+import { ForgotPasswordForm } from './components/forgot-password-form'
 
 export function ForgotPassword() {
   return (
@@ -27,5 +27,5 @@ export function ForgotPassword() {
         </CardFooter>
       </Card>
     </AuthLayout>
-  );
+  )
 }

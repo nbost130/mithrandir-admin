@@ -1,8 +1,8 @@
-import { Logo } from '@/assets/logo';
+import { Logo } from '@/assets/logo'
 
 type AuthLayoutProps = {
-  children: React.ReactNode;
-};
+  children: React.ReactNode
+}
 
 export function AuthLayout({ children }: AuthLayoutProps) {
   return (
@@ -15,5 +15,5 @@ export function AuthLayout({ children }: AuthLayoutProps) {
         {children}
       </div>
     </div>
-  );
+  )
 }

@@ -1,4 +1,4 @@
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/button'
 
 export function MaintenanceError() {
   return (
@@ -15,5 +15,5 @@ export function MaintenanceError() {
         </div>
       </div>
     </div>
-  );
+  )
 }

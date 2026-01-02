@@ -1,7 +1,7 @@
-import { Link } from '@tanstack/react-router';
-import { SignOutDialog } from '@/components/sign-out-dialog';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Button } from '@/components/ui/button';
+import { Link } from '@tanstack/react-router'
+import { SignOutDialog } from '@/components/sign-out-dialog'
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import { Button } from '@/components/ui/button'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -11,11 +11,11 @@ import {
   DropdownMenuSeparator,
   DropdownMenuShortcut,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
-import useDialogState from '@/hooks/use-dialog-state';
+} from '@/components/ui/dropdown-menu'
+import useDialogState from '@/hooks/use-dialog-state'
 
 export function ProfileDropdown() {
-  const [open, setOpen] = useDialogState();
+  const [open, setOpen] = useDialogState()
 
   return (
     <>
@@ -67,5 +67,5 @@ export function ProfileDropdown() {
 
       <SignOutDialog open={!!open} onOpenChange={setOpen} />
     </>
-  );
+  )
 }

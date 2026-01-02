@@ -1,27 +1,27 @@
-import { Link, useLocation, useNavigate } from '@tanstack/react-router';
-import { type JSX, useState } from 'react';
-import { buttonVariants } from '@/components/ui/button';
-import { ScrollArea } from '@/components/ui/scroll-area';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { cn } from '@/lib/utils';
+import { Link, useLocation, useNavigate } from '@tanstack/react-router'
+import { type JSX, useState } from 'react'
+import { buttonVariants } from '@/components/ui/button'
+import { ScrollArea } from '@/components/ui/scroll-area'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import { cn } from '@/lib/utils'
 
 type SidebarNavProps = React.HTMLAttributes<HTMLElement> & {
   items: {
-    href: string;
-    title: string;
-    icon: JSX.Element;
-  }[];
-};
+    href: string
+    title: string
+    icon: JSX.Element
+  }[]
+}
 
 export function SidebarNav({ className, items, ...props }: SidebarNavProps) {
-  const { pathname } = useLocation();
-  const navigate = useNavigate();
-  const [val, setVal] = useState(pathname ?? '/settings');
+  const { pathname } = useLocation()
+  const navigate = useNavigate()
+  const [val, setVal] = useState(pathname ?? '/settings')
 
   const handleSelect = (e: string) => {
-    setVal(e);
-    navigate({ to: e });
-  };
+    setVal(e)
+    navigate({ to: e })
+  }
 
   return (
     <>
@@ -56,7 +56,7 @@ export function SidebarNav({ className, items, ...props }: SidebarNavProps) {
               className={cn(
                 buttonVariants({ variant: 'ghost' }),
                 pathname === item.href ? 'bg-muted hover:bg-accent' : 'hover:bg-accent hover:underline',
-                'justify-start'
+                'justify-start',
               )}
             >
               <span className="me-2">{item.icon}</span>
@@ -66,5 +66,5 @@ export function SidebarNav({ className, items, ...props }: SidebarNavProps) {
         </nav>
       </ScrollArea>
     </>
-  );
+  )
 }

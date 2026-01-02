@@ -1,43 +1,43 @@
-import { zodResolver } from '@hookform/resolvers/zod';
-import { ChevronDownIcon } from '@radix-ui/react-icons';
-import { useForm } from 'react-hook-form';
-import { z } from 'zod';
-import { Button, buttonVariants } from '@/components/ui/button';
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
-import { fonts } from '@/config/fonts';
-import { useFont } from '@/context/font-provider';
-import { useTheme } from '@/context/theme-provider';
-import { showSubmittedData } from '@/lib/show-submitted-data';
-import { cn } from '@/lib/utils';
+import { zodResolver } from '@hookform/resolvers/zod'
+import { ChevronDownIcon } from '@radix-ui/react-icons'
+import { useForm } from 'react-hook-form'
+import { z } from 'zod'
+import { Button, buttonVariants } from '@/components/ui/button'
+import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
+import { fonts } from '@/config/fonts'
+import { useFont } from '@/context/font-provider'
+import { useTheme } from '@/context/theme-provider'
+import { showSubmittedData } from '@/lib/show-submitted-data'
+import { cn } from '@/lib/utils'
 
 const appearanceFormSchema = z.object({
   theme: z.enum(['light', 'dark']),
   font: z.enum(fonts),
-});
+})
 
-type AppearanceFormValues = z.infer<typeof appearanceFormSchema>;
+type AppearanceFormValues = z.infer<typeof appearanceFormSchema>
 
 export function AppearanceForm() {
-  const { font, setFont } = useFont();
-  const { theme, setTheme } = useTheme();
+  const { font, setFont } = useFont()
+  const { theme, setTheme } = useTheme()
 
   // This can come from your database or API.
   const defaultValues: Partial<AppearanceFormValues> = {
     theme: theme as 'light' | 'dark',
     font,
-  };
+  }
 
   const form = useForm<AppearanceFormValues>({
     resolver: zodResolver(appearanceFormSchema),
     defaultValues,
-  });
+  })
 
   function onSubmit(data: AppearanceFormValues) {
-    if (data.font != font) setFont(data.font);
-    if (data.theme != theme) setTheme(data.theme);
+    if (data.font != font) setFont(data.font)
+    if (data.theme != theme) setTheme(data.theme)
 
-    showSubmittedData(data);
+    showSubmittedData(data)
   }
 
   return (
@@ -55,7 +55,7 @@ export function AppearanceForm() {
                     className={cn(
                       buttonVariants({ variant: 'outline' }),
                       'w-[200px] appearance-none font-normal capitalize',
-                      'dark:bg-background dark:hover:bg-background'
+                      'dark:bg-background dark:hover:bg-background',
                     )}
                     {...field}
                   >
@@ -142,5 +142,5 @@ export function AppearanceForm() {
         <Button type="submit">Update preferences</Button>
       </form>
     </Form>
-  );
+  )
 }

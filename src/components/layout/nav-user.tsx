@@ -1,7 +1,7 @@
-import { Link } from '@tanstack/react-router';
-import { BadgeCheck, Bell, ChevronsUpDown, CreditCard, LogOut, Sparkles } from 'lucide-react';
-import { SignOutDialog } from '@/components/sign-out-dialog';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Link } from '@tanstack/react-router'
+import { BadgeCheck, Bell, ChevronsUpDown, CreditCard, LogOut, Sparkles } from 'lucide-react'
+import { SignOutDialog } from '@/components/sign-out-dialog'
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -10,21 +10,21 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
-import { SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar } from '@/components/ui/sidebar';
-import useDialogState from '@/hooks/use-dialog-state';
+} from '@/components/ui/dropdown-menu'
+import { SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar } from '@/components/ui/sidebar'
+import useDialogState from '@/hooks/use-dialog-state'
 
 type NavUserProps = {
   user: {
-    name: string;
-    email: string;
-    avatar: string;
-  };
-};
+    name: string
+    email: string
+    avatar: string
+  }
+}
 
 export function NavUser({ user }: NavUserProps) {
-  const { isMobile } = useSidebar();
-  const [open, setOpen] = useDialogState();
+  const { isMobile } = useSidebar()
+  const [open, setOpen] = useDialogState()
 
   return (
     <>
@@ -105,5 +105,5 @@ export function NavUser({ user }: NavUserProps) {
 
       <SignOutDialog open={!!open} onOpenChange={setOpen} />
     </>
-  );
+  )
 }
