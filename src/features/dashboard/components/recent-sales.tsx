@@ -47,7 +47,7 @@ export function RecentSales() {
             <Clock className='h-4 w-4 text-yellow-500' />
           )
 
-        const initials = item.details
+        const initials = (item.details || 'NA')
           .split(' ')
           .slice(0, 2)
           .map((word) => word[0])
