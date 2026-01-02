@@ -1,8 +1,5 @@
 {
-	"$schema": "https://biomejs.dev/schemas/1.9.4/schema.json",
-	"organizeImports": {
-		"enabled": true
-	},
+	"$schema": "https://biomejs.dev/schemas/2.0.0/schema.json",
 	"linter": {
 		"enabled": true,
 		"rules": {
@@ -34,23 +31,16 @@
 		}
 	},
 	"css": {
-		"parser": {
-			"cssModules": true
-		},
 		"linter": {
 			"enabled": false
 		}
 	},
 	"files": {
-		"ignore": [
-			"node_modules",
-			"dist",
-			".next",
-			"*.gen.ts",
-			"*.gen.tsx",
-			"pnpm-lock.yaml",
-			"package-lock.json",
-			"bun.lock"
+		"includes": [
+			"src/**/*.ts",
+			"src/**/*.tsx",
+			"src/**/*.js",
+			"src/**/*.jsx"
 		]
 	}
 }
