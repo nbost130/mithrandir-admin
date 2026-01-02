@@ -4,7 +4,7 @@ import { CheckCircle2, XCircle, Clock } from 'lucide-react'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import { dashboardApi } from '../api/dashboard-api'
 
-export function RecentSales() {
+export function RecentActivity() {
   const { data: activity = [], isLoading } = useQuery({
     queryKey: ['dashboard-activity'],
     queryFn: () => dashboardApi.getActivity(5),

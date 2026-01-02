@@ -1,10 +1,8 @@
 import {
   LayoutDashboard,
   Monitor,
-  ListTodo,
   HelpCircle,
   Bell,
-  Package,
   Palette,
   Settings,
   Wrench,
@@ -46,16 +44,6 @@ export const sidebarData: SidebarData = {
           title: 'Transcription',
           url: '/transcription',
           icon: Mic2,
-        },
-        {
-          title: 'Tasks',
-          url: '/tasks',
-          icon: ListTodo,
-        },
-        {
-          title: 'Apps',
-          url: '/apps',
-          icon: Package,
         },
       ],
     },
