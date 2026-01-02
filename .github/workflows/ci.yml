@@ -34,8 +34,8 @@ jobs:
       # - name: Analyze unused files and dependencies
       #   run: pnpm knip
 
-      - name: Run Prettier check
-        run: pnpm format:check
+      - name: Run Biome check (format + lint)
+        run: pnpm biome:check
 
       - name: Build the project
         run: pnpm build
