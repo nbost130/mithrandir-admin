@@ -24,6 +24,9 @@
 			"suspicious": {
 				"noArrayIndexKey": "warn",
 				"noExplicitAny": "warn"
+			},
+			"style": {
+				"noNonNullAssertion": "warn"
 			}
 		}
 	},
