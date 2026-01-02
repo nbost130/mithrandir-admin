@@ -4,7 +4,7 @@ import { CheckCircle2, Clock, XCircle } from 'lucide-react';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { dashboardApi } from '../api/dashboard-api';
 
-export function RecentSales() {
+export function RecentActivity() {
   const { data: activity = [], isLoading } = useQuery({
     queryKey: ['dashboard-activity'],
     queryFn: () => dashboardApi.getActivity(5),
@@ -43,7 +43,7 @@ export function RecentSales() {
             <Clock className="h-4 w-4 text-yellow-500" />
           );
 
-        const initials = item.details
+        const initials = (item.details || 'NA')
           .split(' ')
           .slice(0, 2)
           .map((word) => word[0])

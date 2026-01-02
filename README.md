@@ -36,7 +36,13 @@ Modern, professional admin dashboard for managing all Mithrandir services.
 ```bash
 cd ~/Projects/mithrandir-admin
 npm install
+pnpm install
 ```
+
+> 💡 **Why both?** This repo keeps both `package-lock.json` **and** `pnpm-lock.yaml`.
+> GitHub Actions installs dependencies with `pnpm install --frozen-lockfile`, so any
+> change to `package.json` must be followed by _both_ commands to keep the lockfiles in
+> sync and avoid CI failures.
 
 ## 🔧 Development
 
@@ -64,6 +70,7 @@ The dashboard integrates with the **Mithrandir Unified API**, which acts as an A
   - `/services/*` - Service health checks
 
 **DO NOT** point directly to backend services (e.g., port 9003). The Unified API provides:
+
 - ✅ Consistent API contracts
 - ✅ Centralized CORS, authentication, rate limiting
 - ✅ Service abstraction and flexibility
@@ -91,6 +98,40 @@ VITE_ALLOWED_HOSTS=dashboard.shire,admin.shire,mithrandir-admin.shire,localhost,
 VITE_API_BASE_URL=http://100.77.230.53:9003
 VITE_TRANSCRIPTION_API=http://100.77.230.53:9003/api/v1
 ```
+
+## 🔧 API Type Generation
+
+This project uses TypeScript types generated from the Transcription Palantir OpenAPI specification for type-safe API integration.
+
+**Regenerate types after Transcription Palantir API updates:**
+
+```bash
+# Generate types from local API (default)
+npm run generate:types
+
+# Or specify custom API URL
+TRANSCRIPTION_API_URL=http://palantir.tailnet:3001 npm run generate:types
+```
+
+**Generated file:** `src/types/palantir.d.ts`
+
+**Usage example:**
+
+```typescript
+import type { paths, components } from './types/palantir'
+
+type JobsResponse =
+  paths['/api/v1/jobs']['get']['responses']['200']['content']['application/json']
+type Job = components['schemas']['Job']
+```
+
+**When to regenerate:**
+
+- After updating Transcription Palantir API
+- When TypeScript compilation errors indicate type mismatches
+- Before deploying changes
+
+See [Transcription Palantir: Consumer Type Generation Guide](https://github.com/nbost130/transcription-palantir/blob/main/docs/CONSUMER_TYPE_GENERATION.md) for complete documentation.
 
 ## 🎨 Project Structure
 

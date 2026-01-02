@@ -1,19 +1,17 @@
 import {
-  Bell,
-  Command,
-  HelpCircle,
   LayoutDashboard,
-  ListTodo,
-  Mic2,
   Monitor,
-  Package,
+  HelpCircle,
+  Bell,
   Palette,
-  Server,
   Settings,
-  UserCog,
   Wrench,
-} from 'lucide-react';
-import type { SidebarData } from '../types';
+  UserCog,
+  Command,
+  Mic2,
+  Server,
+} from 'lucide-react'
+import { type SidebarData } from '../types'
 
 export const sidebarData: SidebarData = {
   user: {
@@ -46,16 +44,6 @@ export const sidebarData: SidebarData = {
           title: 'Transcription',
           url: '/transcription',
           icon: Mic2,
-        },
-        {
-          title: 'Tasks',
-          url: '/tasks',
-          icon: ListTodo,
-        },
-        {
-          title: 'Apps',
-          url: '/apps',
-          icon: Package,
         },
       ],
     },
@@ -101,4 +89,4 @@ export const sidebarData: SidebarData = {
       ],
     },
   ],
-};
+}

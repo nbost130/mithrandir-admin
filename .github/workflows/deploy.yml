@@ -41,12 +41,14 @@ jobs:
       run: |
         ssh nbost@100.77.230.53 << 'ENDSSH'
           set -e
-          
+
           echo "📂 Navigating to project directory..."
           cd /home/nbost/Projects/mithrandir-admin
-          
-          echo "📥 Pulling latest changes..."
-          git pull origin main
+          export HUSKY=0
+
+          echo "🔄 Syncing with GitHub (using reset to handle divergence)..."
+          git fetch origin main
+          git reset --hard origin/main
           
           echo "📦 Installing dependencies..."
           npm install
@@ -59,8 +61,7 @@ jobs:
           
           echo "✅ Verifying deployment..."
           sleep 5
-          curl -f http://localhost:3000 || exit 1
+          curl -f http://localhost:3334 || exit 1
           
           echo "🎉 Deployment successful!"
         ENDSSH
-
