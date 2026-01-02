@@ -174,6 +174,7 @@ function SidebarMenuCollapsedDropdown({
 }
 
 function checkIsActive(href: string, item: NavItem, mainNav = false) {
+  if (!href) return false
   return (
     href === item.url || // /endpint?search=param
     href.split('?')[0] === item.url || // endpoint
