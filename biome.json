@@ -18,7 +18,8 @@
 			},
 			"a11y": {
 				"useButtonType": "warn",
-				"useSemanticElements": "warn"
+				"useSemanticElements": "warn",
+				"noSvgWithoutTitle": "warn"
 			},
 			"suspicious": {
 				"noArrayIndexKey": "warn"
