@@ -15,6 +15,13 @@
 			"correctness": {
 				"noUnusedVariables": "warn",
 				"noUnusedImports": "warn"
+			},
+			"a11y": {
+				"useButtonType": "warn",
+				"useSemanticElements": "warn"
+			},
+			"suspicious": {
+				"noArrayIndexKey": "warn"
 			}
 		}
 	},
