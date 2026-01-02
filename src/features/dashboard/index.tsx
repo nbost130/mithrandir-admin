@@ -19,7 +19,7 @@ import { ThemeSwitch } from '@/components/theme-switch'
 import { dashboardApi } from './api/dashboard-api'
 import { Analytics } from './components/analytics'
 import { Overview } from './components/overview'
-import { RecentSales } from './components/recent-sales'
+import { RecentActivity } from './components/recent-activity'
 
 export function Dashboard() {
   const { data: stats, isLoading } = useQuery({
@@ -152,7 +152,7 @@ export function Dashboard() {
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <RecentSales />
+                  <RecentActivity />
                 </CardContent>
               </Card>
             </div>
