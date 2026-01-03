@@ -12,10 +12,12 @@ All requests go through the Mithrandir Unified API (`VITE_API_BASE_URL`, default
 | `/transcription/jobs/:id` | PATCH | Updates job priority. Body: `{ priority: number }`. | `transcriptionApi.updateJobPriority` |
 | `/transcription/health` | GET | Returns `{ status: 'healthy' | 'unhealthy' }`. | `transcriptionApi.healthCheck` |
 
-## Dashboard / Services (Planned)
-- `/api/dashboard/*`: Aggregated system KPIs for widgets. (API client scaffolding in `features/dashboard/api`).
-- `/services/*`: Health + control endpoints for services view.
-- `/ssh-status`: Exposes server resource stats.
+## Dashboard / Services
+| Endpoint | Method | Description | Handler |
+| --- | --- | --- | --- |
+| `/api/services/health` | GET | Returns `{ services: ServiceDetails[], summary }` used by Service cards and global health gauges. | `servicesApi.getHealth` |
+| `/api/dashboard/*` | GET | Aggregated system KPIs for dashboard widgets (client scaffolding exists; implement per Unified API contract). | `dashboardApi.*` |
+| `/ssh-status` | GET | Server resource stats for future monitoring cards. | Pending |
 
 > 🔔 **GitHub Issues Reminder:** Review open/closed issues for additional planned endpoints (delegation, n8n, tasks) before implementing. Add exports to this doc when endpoints are formalized.
 

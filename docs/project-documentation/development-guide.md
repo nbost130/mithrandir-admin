@@ -2,7 +2,7 @@
 
 ## Prerequisites
 - Node 20+
-- npm (preferred package manager; `pnpm`/`yarn` are disabled)
+- **npm only** (pnpm/yarn disabled and bun currently breaks Vitest + Biome). GitHub Actions also uses npm for install/test.
 - Access to Mithrandir Unified API over LAN/Tailscale (port 8080)
 
 ## Environment Setup
@@ -23,9 +23,11 @@
 | Start dev server | `npm run dev` |
 | Build production bundle | `npm run build` |
 | Preview prod build | `npm run preview` |
-| Lint | `npm run lint` or `npm run biome:lint` |
-| Format | `npm run format` |
-| Unit/UI tests | `npm run test`, `npm run test:ui`, `npm run test:coverage` |
+| Lint (Biome) | `npm run lint` / `npm run biome:lint` |
+| Auto-fix + format | `npm run biome:format` |
+| Full check (lint + format + autofix) | `npm run biome:check` |
+| Unit/UI tests (Vitest) | `npm run test`, `npm run test:ui` |
+| Coverage run | `npm run test:coverage` |
 | Dependency hygiene | `npm run knip` |
 | File size budget check | `npm run check:size` |
 
@@ -35,11 +37,12 @@
 - Keep new Zustand stores in `src/stores` and export typed hooks.
 - Use TanStack Router `createFileRoute` to add pages; update `sidebar-data.ts` for navigation entry.
 - All API calls must go through `apiClient` to enforce Unified API base URL and error handling.
+- Biome replaces ESLint/Prettier; see [Biome Guide](./biome-guide.md) for rule details and scripts.
 
 ## Testing Notes
-- Vitest uses `jsdom` environment with global test utilities configured via `src/test/setup.ts`.
-- Add component tests next to features using `*.test.tsx` for UI, `*.test.ts` for logic.
-- For integration tests (planned), leverage Playwright or Cypress once configured.
+- Vitest uses `jsdom` with `src/test/setup.ts` for Testing Library globals. Always run via `npm run test*` (bun is unsupported).
+- Place component tests next to the feature (`Component.test.tsx`) and keep integration fixtures under `src/test`.
+- Use `npm run test:coverage` before PRs touching core screens to ensure thresholds stay healthy. See [Testing Guide](./testing-guide.md) for patterns.
 
 ## Observability & Errors
 - `NavigationProgress` + toast notifications provide runtime feedback.

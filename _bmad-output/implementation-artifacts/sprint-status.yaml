@@ -1,0 +1,61 @@
+# Sprint Status - Mithrandir Admin
+# Generated: 2026-01-03
+# Workflow: create-story (batch mode)
+
+# STATUS DEFINITIONS:
+# - backlog: Story not yet created with full dev context
+# - ready-for-dev: Story file created, ready for implementation
+# - in-progress: Developer actively working on story
+# - review: Implementation complete, pending code review
+# - done: Story completed and merged
+
+sprint_info:
+  name: "Sprint 1 - Reliability Foundation"
+  start_date: "2026-01-03"
+  target_epics: [0, 1, 2, 3, 5]  # Epic 4 deferred to future
+
+development_status:
+  # Epic 0: Backend Prerequisites (BLOCKING)
+  epic-0: ready-for-dev
+  0-1-backend-reconciliation-module: ready-for-dev
+  0-2-palantir-stuck-job-endpoint: ready-for-dev  # Palantir repo
+
+  # Epic 1: Reliability Telemetry Foundation
+  epic-1: ready-for-dev
+  1-1-sse-reconciliation-stream: ready-for-dev
+  1-2-transcription-state-view: ready-for-dev
+  1-3-service-health-matrix: ready-for-dev
+  1-4-stale-rate-limit-messaging: ready-for-dev
+
+  # Epic 2: Maintenance Command Center
+  epic-2: backlog
+  2-1-job-retry-delete: ready-for-dev
+  2-2-queue-hygiene: ready-for-dev
+  2-3-service-restart: ready-for-dev
+  2-4-audit-trail-viewer: ready-for-dev
+
+  # Epic 3: GitHub Issue Hub
+  epic-3: backlog
+  3-1-github-issue-feed: ready-for-dev
+  3-2-issue-detail-telemetry: ready-for-dev
+
+  # Epic 4: AI-Powered Remediation (DEFERRED - needs design session)
+  # Per architect decision: requires Epic 5 (n8n integration) first
+  epic-4: future
+  4-1-issue-ai-delegation: future
+  4-2-ai-response-tracking: future
+  4-3-command-execution-layer: future
+  4-4-health-verification: future
+  4-5-manual-fallback: future
+
+  # Epic 5: Service Onboarding & Discovery
+  epic-5: backlog
+  5-1-auto-discovery: ready-for-dev
+  5-2-health-validation-gate: ready-for-dev
+  5-3-service-decommissioning: ready-for-dev
+
+  # Epic 6: Advanced Automation Hub (Future)
+  epic-6: future
+  6-1-delegation-priorities: future
+  6-2-n8n-workflow-control: future
+  6-3-cross-project-ops: future

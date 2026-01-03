@@ -11,7 +11,8 @@
 | Errors | `GeneralError`, `NotFoundError` | `src/features/errors` | Bound to router’s `errorComponent` and `notFoundComponent`. |
 | Auth | `features/auth/*` | `src/features/auth` | Clerk/TanStack router integration (login/register flows). |
 | Settings | `features/settings` | Contains placeholder cards for user/org preferences; ready for wiring to API. |
-| Dashboard Widgets | `features/dashboard/components` | Stats cards, charts scaffolding (uses Recharts + custom skeletons). |
+| Dashboard Widgets | `features/dashboard/components` | Stats cards, charts scaffolding (uses Recharts + custom skeletons). Includes `recent-activity.tsx` for live Palantir job feed. |
+| Services | `ServiceCard` | `src/features/services/components/service-card.tsx` | Reusable card that renders uptime, version, health badge, and quick links for `/api/services/health` responses. |
 
 ## Notes
 - Components follow `index.tsx` entry pattern, enabling lazy imports from routes.

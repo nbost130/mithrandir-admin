@@ -6,19 +6,20 @@
 - Keep PRs scoped to a feature/bug; include screenshots for UI tweaks.
 
 ## Code Style
-- Run `npm run lint` and `npm run format` before pushing.
+- Run `npm run lint` and `npm run biome:format` before pushing.
 - Prefer functional, typed React components; avoid default exports for feature modules.
 - Use shadcn UI primitives + Tailwind utility classes to maintain styling consistency.
 
 ## Testing Expectations
 - Add Vitest unit tests for new stores, hooks, and helpers.
 - Snapshot or interaction tests for complex UI states using Testing Library.
-- For API integrations, mock axios with MSW or jest mocks to avoid live calls.
+- For API integrations, mock axios with MSW or Vitest's `vi.mock` utilities to avoid live calls.
 
 ## Documentation Flow
 - Update `docs/project-documentation/` when introducing new APIs, data models, or architectural decisions.
 - Mirror key GitHub Issues (open/closed) by exporting them into this docs folder so offline agents keep context.
 - Extend README sections (features, roadmap) when a module graduates from placeholder to production-ready.
+- Refresh `docs/project-documentation/github-issues.md` by running `python3 scripts/update_github_issues_snapshot.py` whenever you start a planning workflow (workflow-init, PRD, sprint planning) or notice major issue churn.
 
 ## Security & Config
 - Never commit secrets. `.env` belongs to developer machines only.

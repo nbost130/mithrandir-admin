@@ -17,8 +17,11 @@ Welcome to the brownfield documentation set for the Mithrandir Admin dashboard.
 6. [API Contracts](./api-contracts-admin-dashboard.md)
 7. [Data Models](./data-models-admin-dashboard.md)
 8. [Development Guide](./development-guide.md)
-9. [Deployment Guide](./deployment-guide.md)
-10. [Contribution & Workflow Notes](./contribution-guidelines.md)
+9. [Biome Guide](./biome-guide.md)
+10. [Testing Guide](./testing-guide.md)
+11. [GitHub Issues Snapshot](./github-issues.md)
+12. [Deployment Guide](./deployment-guide.md)
+13. [Contribution & Workflow Notes](./contribution-guidelines.md)
 
 ## Usage
 - Feed this index into BMad brownfield PRD workflows to give AI agents the full system context.

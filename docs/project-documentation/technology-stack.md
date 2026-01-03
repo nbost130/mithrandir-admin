@@ -14,7 +14,8 @@
 | Charts & Tables | Recharts / TanStack Table | ^3.2.1 / ^8.21.3 | Data visualization + data grid support for dashboards. |
 | Icons | lucide-react | ^0.545.0 | Light-weight icon set for nav + status. |
 | Notifications | sonner | ^2.0.7 | Toasts for job success/error states. |
-| Tooling | ESLint 9, Prettier 3, Biome optional, Knip | Latest | Scripts cover linting, formatting, unused exports. |
+| Package Manager | npm (local + CI) | 10.x | Use `npm` for everything (bun has an open Vitest issue and workflows pin to npm as well). |
+| Tooling | Biome 2 + Knip | ^2.3.10 | Biome handles lint + format (`npm run biome:*`). Warn rules enforce a11y + unused imports (see biome guide). |
 | CI/CD | GitHub Actions + Tailscale + systemd | N/A | Workflows located in `.github/workflows/ci.yml` and `deploy.yml`. |
 
 ## External Services

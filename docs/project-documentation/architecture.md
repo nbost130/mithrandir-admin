@@ -23,8 +23,8 @@ Mithrandir Unified API (port 8080)
    - `NavigationProgress` renders top loading bar for route transitions.
 
 3. **Feature Modules** (`src/features/*`)
-   - Each domain (transcription, dashboard, tasks, services, etc.) isolates API adapters, data shapes, and UI components.
-   - Shared libs under `src/lib` provide API client, cookie utilities, error reporting.
+   - Active domains today are **transcription**, **dashboard**, **services**, **settings**, and **auth**. Each feature keeps its API adapters, data contracts, and UI widgets in one folder.
+   - Shared libs under `src/lib` provide API client, cookie utilities, and error tracking helpers that every feature reuses.
 
 4. **State + Data Fetching**
    - TanStack Query handles server cache (QueryClient passed through router context).
@@ -33,7 +33,7 @@ Mithrandir Unified API (port 8080)
 ## Backend Contracts
 - **Transcription:** `src/features/transcription/api/transcription-api.ts` defines CRUD + health endpoints. All endpoints map to `/transcription/*` under Unified API.
 - **Dashboard Stats:** `src/features/dashboard/api` (placeholder) will call `/api/dashboard/*` once implemented.
-- **Services/Tasks:** `features/services` and `features/tasks` structure future API adapters (currently scaffolding).
+- **Service Health:** `src/features/services/api/services-api.ts` hits `/api/services/health` to retrieve summary + detailed status for each homelab service and powers the new `ServiceCard` UI.
 
 ## Data Flow
 1. UI triggers Query action (e.g., refresh jobs).
@@ -49,5 +49,5 @@ Mithrandir Unified API (port 8080)
 - **Loading States:** `react-top-loading-bar` and skeleton components in each feature keep UX responsive.
 
 ## Pending Integrations
-- Delegation, n8n, monitoring modules exist as directories but require API contract definition.
-- GitHub Issues are the canonical backlog for missing modules—important to sync into docs before planning sessions.
+- Delegation, n8n, and system-monitoring modules live in the roadmap (GitHub Issues). Add documentation sections when their APIs land in the Unified API.
+- GitHub Issues are the canonical backlog for missing modules—import open/closed issues into this folder before major planning sessions.
